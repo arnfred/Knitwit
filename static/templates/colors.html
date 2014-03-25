@@ -1,0 +1,65 @@
+<div class="row less-space" id="color-row">
+
+	<div class="col-md-3 description">
+		<h3>Select Colors</h3>
+
+		<p>To reduce the amount of colors you can select the color groups of
+		the image. To set a color, click on the color field and then on the
+		image. Add more colors and groups to suit your yarn.</p>
+
+	</div>
+
+	<div class="col-md-6">
+
+		<!-- canvas with image -->
+		<canvas id="color-picker"></canvas>
+
+		<!-- color groups -->
+		<ul class="colors">
+			{{ #colors }}
+			<li on-click="change-color" style="background-color:rgb({{r}},{{g}},{{b}})"></li>
+			{{ /colors }}
+			<p class="add add-color" on-click="add-color">
+				Add color
+			</p>
+		</ul>
+	</div>
+</div>
+
+
+
+<div class="row space" id="generate-row">
+	<div class="col-md-3 description">
+		<h3>Generate Pattern</h3>
+
+		<p>Set the width and length in stitches of your pattern, then click to generate your finished knitting pattern.</p>
+
+	</div>
+
+	<!-- Upload and Camera buttons -->
+	<div class="col-md-6" id="generate">
+		<div class="row">
+
+			<div id="pattern-size" class="col-md-6">
+				{{ #size }}
+				<form id="size-form">
+					<p>
+					<label for="pattern-width">Pattern width:</label>
+					<input class="pattern-size form-control" id="pattern-width" type="text" value="{{ width }}" name="width"/>
+					</p><p>
+					<label for="pattern-height">Pattern height:</label>
+					<input id="pattern-height" class="pattern-size form-control" type="text" value="{{ height }}" name="height"/>
+					</p>
+				</form>
+				{{ /size }}
+			</div>
+
+			<div class="col-md-6">
+				<button on-tap="generate-pattern" class="square-button" id="generate-pattern">
+					<img src="/static/images/generate.png" alt="generate pattern"/>
+					<p>Generate Pattern<p>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

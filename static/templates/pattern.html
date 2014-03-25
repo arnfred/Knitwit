@@ -1,0 +1,45 @@
+<div class="row">
+
+	<div class="col-md-3 description">
+		<h3>Your Pattern</h3>
+
+		<p>You can adjust the colors in your pattern by clicking on the colors.
+		To adjust individual fields of your pattern, click on them until they
+		have the correct color.</p>
+	</div>
+
+
+	<!-- Row of colors -->
+	<div class="col-md-6">
+		<ul class="colors">
+			{{ #colors }}
+			<li on-click="set-color" style="background-color:rgb({{r}},{{g}},{{b}})"></li>
+			{{ /colors }}
+		</ul>
+	</div>
+
+	<!-- Table for pattern -->
+	<div class="col-md-6">
+		<table>
+
+			<!-- Table headers -->
+			<tr>
+				<th></th>
+				{{ #header:index }}
+				<th>{{ (index+1) % 100 }}</th>
+				{{ /header }}
+			</tr>
+
+			<!-- Table body -->
+			{{ #pattern:row_index }}
+			<tr>
+				<td class="header">{{ (row_index + 1) % 100 }}</td>
+				{{ #row }}
+				<td class="point color{{ this }}" on-click="correct-color"></td>
+				{{ /row }}
+			</tr>
+			{{ /pattern }}
+		</table>
+	</div>
+
+</div>
