@@ -1,0 +1,70 @@
+{{ #upload }}
+<!-- Form elements -->
+<form id="upload-form" name="upload-form" enctype="multipart/form-data" action="/upload/" method="POST">
+	<input class="hide" type="file" size="20" id="upload-input" value="{{ file }}" />
+</form>
+
+<div class="row space" id="upload-row">
+
+	<!-- Upload description -->
+	<div class="col-md-3 description" id="upload-desc">
+		<h3>Upload or Take Image</h3>
+		<p>To make a knitting pattern, upload an image or take a photo with your webcam</p>
+	</div>
+
+	<!-- Upload and Camera buttons -->
+	<div class="col-md-6" id="upload-buttons">
+		<div class="row">
+			<div class="col-md-6">
+				<button on-tap="upload-image" class="square-button" id="upload-image">
+					<img src="/static/images/upload.png" alt="upload image"/>
+					<p>{{ file ? file[0].name : "Upload File" }}<p>
+				</button>
+			</div>
+			<div class="col-md-6">
+				<button on-tap="capture-image" class="square-button" id="capture-image">
+					<img src="/static/images/camera.png" alt="take photo"/>
+					<p>Take Photo<p>
+				</button>
+			</div>
+		<div class="raw">
+	</div>
+
+</div>
+{{ /upload }}
+
+
+{{ #capture }}
+<div class="row space" id="capture-row">
+
+	<!-- Preview description -->
+	<div class="col-md-3 description" id="capture-desc">
+		<h3>Take photo</h3>
+		<p>Tap on the video to take a photo</p>
+	</div>
+
+	<!-- Show image preview for cropping -->
+	<div intro="fade" class="col-md-6" id="capture">
+		<video on-tap="take-photo" id="video"></video>
+		<canvas id="canvas" class="hide"></canvas>
+	</div>
+
+</div>
+{{ /capture }}
+
+{{ #preview }}
+<div class="row space" id="preview-row" intro="fade">
+
+	<!-- Preview description -->
+	<div class="col-md-3 description" id="preview-desc">
+		<h3>Crop Image</h3>
+		<p>You can crop your image by selecting the area of the image you would like to use. Click 'Next' when you are satisfied with the result.</p>
+	</div>
+
+	<!-- Show image preview for cropping -->
+	<div class="col-md-6" id="preview">
+		<img alt="preview" id="preview-image" src="{{ src }}" />
+	</div>
+
+</div>
+{{ /preview }}
