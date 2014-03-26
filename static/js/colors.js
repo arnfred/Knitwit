@@ -26,6 +26,9 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 				width : 60,
 				height : 60,
 				ratio : 1,
+			},
+			generate : {
+				src : "/static/images/generate.png"
 			}
 		}
 	});
@@ -70,11 +73,11 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 			// Make pattern size fields update
 			var size_ratio = canvas.width / canvas.height;
 			view.set("size.ratio", size_ratio);
-			view.observe("size.width", function(new_val, old_val) {
-				view.set("size.height", Math.round(new_val * view.get("size.ratio")));
-			});
 			view.observe("size.height", function(new_val, old_val) {
-				view.set("size.width", Math.round(new_val / view.get("size.ratio")));
+				view.set("size.width", Math.round(new_val * view.get("size.ratio")));
+			});
+			view.observe("size.width", function(new_val, old_val) {
+				view.set("size.height", Math.round(new_val / view.get("size.ratio")));
 			});
 		};
 		image.src = image_data.src;

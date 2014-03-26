@@ -55,10 +55,12 @@
 			</div>
 
 			<div class="col-md-6">
+				{{ #generate }}
 				<button on-tap="generate-pattern" class="square-button" id="generate-pattern">
-					<img src="/static/images/generate.png" alt="generate pattern"/>
+					<img src="{{ src }}" alt="generate pattern"/>
 					<p>Generate Pattern<p>
 				</button>
+				{{ /generate }}
 			</div>
 		</div>
 	</div>

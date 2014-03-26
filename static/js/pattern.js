@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
 	function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////
@@ -33,6 +33,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	view.events = function() {
 		// Correct color when user clicks on pattern
 		view.on("correct-color", correct_color);
+
+		// Set color with color picker
+		$("#pattern-colors li").each(add_color_picker);	
 	}
 
 	////////////////////////////////////////
@@ -101,6 +104,45 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		var nb_colors = view.get("colors").length;
 		view.set(e.keypath, (current + 1) % nb_colors);
 	}
+
+
+	var add_color_picker = function(index, elem) {
+
+		var set_color = function(color) {
+			$(elem).css("background-color", color.toHexString());
+		}
+
+		var update_table = function(color, i) {
+			css.change("td.color" + i, "background-color: " + color.toHexString());
+		}
+
+		var bg = $(elem).css("background-color");
+
+		$(elem).spectrum({
+			color: bg,
+			change: function(color) { update_table(color, index) },
+			move: set_color,
+			show: set_color,
+			hide: set_color
+		});
+	}
+
+	// Enables a color picker
+	var set_color = function(e) {
+		var c = e.context;
+		console.debug(c);
+		console.debug(e);
+		var bg = "rgb(" + c.r + ", " + c.g + ", " + c.b + ")";
+		console.debug($(e.node));
+		$(e.node).spectrum("show", {
+				color: bg,
+				//change: function(color) { update_table(color, index) },
+				//move: set_color,
+				//show: set_color,
+				//hide: set_color
+			});
+		}
+	
 
 
 

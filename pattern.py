@@ -14,7 +14,6 @@ def open_image(path, colors, max_height = 60, crop = None) :
 			image_cropped = image_no_alpha.crop((crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y']))
 		else :
 			image_cropped = image_no_alpha
-		print(image_cropped.size)
 		# Resize to max height
 		image = resize(image_cropped, max_height)
 		# Get numpy array with image data
@@ -26,9 +25,17 @@ def open_image(path, colors, max_height = 60, crop = None) :
 
 def resize(image, max_height) :
 	width, height = image.size
-	new_width = math.ceil(height / float(max_height) * width)
+	new_width = round(height / float(max_height) * width)
 	image.thumbnail([new_width, max_height], Image.ANTIALIAS)
 	return image
+
+
+def round(n) :
+    if n % 1 > 0.5 :
+	return math.ceil(n)
+    else :
+	return math.floor(n)
+
 
 
 def get_data(image) :
