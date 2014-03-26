@@ -93,7 +93,7 @@ class pattern_json :
 
 		# Check if pattern should be turned
 		if data.shape[1] > data.shape[0] and data.shape[1] > 99 :
-			data = data.T
+			data = numpy.rot90(data)
 
 		# Runlength encode data and send to client
 		encoded_data = pattern.run_length_encode(data)

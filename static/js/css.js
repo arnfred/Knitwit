@@ -38,7 +38,6 @@ define(["lib/underscore"], function(_) {
 		// If we only delete one item, modify fields 
 		if (only_last_p) { fields = [_(fields).last()]; }
 		// Now remove all fields left in the list
-		console.debug(fields)
 		_(fields).each(function(f) {
 			var sheet = document.styleSheets[f.sheet];
 			sheet.deleteRule(f.key);
