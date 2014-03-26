@@ -136,6 +136,7 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 		// Add to view
 		var colors = view.get(event_data.keypath + ".colors");
 		colors.push(new_color);
+		$("#change-color li").last().trigger("click")
 	}
 
 
