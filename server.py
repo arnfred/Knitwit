@@ -28,6 +28,7 @@ class index :
     def GET(self):
 		return render.main()
 
+# A regular image is uploaded
 class upload :
 	def POST(self):
 		# Get the post data
@@ -46,6 +47,7 @@ class upload :
 			im.save(saved, 'JPEG')
 		return json.dumps({ 'path' : path })
 
+# A form with a png data url is uploaded
 class photo :
 	def POST(self):
 		# Get post data
@@ -87,7 +89,7 @@ class pattern_json :
 		image = str(d.image)
 
 		# Create pattern matrix
-		data = pattern.open_image(image, colors, stitches["width"], crop)
+		data = pattern.open_image(image, colors, stitches["height"], crop)
 
 		# Check if pattern should be turned
 		if data.shape[1] > data.shape[0] and data.shape[1] > 99 :

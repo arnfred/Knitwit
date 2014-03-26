@@ -11,9 +11,9 @@
 
 	<!-- Row of colors -->
 	<div class="col-md-6">
-		<ul class="colors">
+		<ul class="colors" id="pattern-colors">
 			{{ #colors }}
-			<li on-click="set-color" style="background-color:rgb({{r}},{{g}},{{b}})"></li>
+			<li style="background-color:rgb({{r}},{{g}},{{b}})"></li>
 			{{ /colors }}
 		</ul>
 	</div>

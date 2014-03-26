@@ -31,10 +31,18 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			pattern.set("colors", colors.get("colors"));
 
 			// Replace PNG with gif of spinning gear
-			// TODO
-			
+			var image = new Image();
+			var path = "/static/images/generate.gif";
+			image.onload = function(){ // always fires the event.
+				colors.set('generate.src', path)
+			};
+			image.src = path;
+
 			// Send JSON
-			$.getJSON("/pattern.json", params, pattern.init);
+			$.getJSON("/pattern.json", params, function(encoded_pattern) {
+				pattern.init(encoded_pattern);
+				colors.set('generate.src', "/static/images/generate.png");
+			});
 		});
 	}
 
