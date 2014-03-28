@@ -11,9 +11,12 @@
 
 	<!-- Row of colors -->
 	<div class="col-md-6">
-		<ul class="colors" id="pattern-colors">
+		<ul class="pattern-colors" id="pattern-colors">
 			{{ #colors }}
-			<li style="background-color:rgb({{r}},{{g}},{{b}})"></li>
+			<li>
+				<div class="color" style="background-color:rgb({{r}},{{g}},{{b}})"></div>
+				<p on-click="set-merge" class="select">Select</p>
+			</li>
 			{{ /colors }}
 		</ul>
 	</div>

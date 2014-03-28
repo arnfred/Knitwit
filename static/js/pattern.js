@@ -19,7 +19,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			pattern : [{
 				row : []
 			}],
-			header : []
+			header : [],
+			merge : false
 		}
 	});
 
@@ -35,7 +36,14 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		view.on("correct-color", correct_color);
 
 		// Set color with color picker
-		$("#pattern-colors li").each(add_color_picker);	
+		$("#pattern-colors li div").each(add_color_picker);	
+
+		// Change all other colors to merge with set-merge
+		view.on("set-merge", function(e) {
+			if (view.get("merge") == false) init_merge(e);
+			else merge_colors(e);
+			return false;
+		});
 	}
 
 	////////////////////////////////////////
@@ -62,8 +70,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			css.add("td.color" + index, "background-color: " + rgb);
 		});
 
-		// Replace gif of spinning wheel with PNG (or stop it)
-		// TODO
+		// Fade in pattern
+		$("#pattern").fadeIn();
 
 		// Capture events
 		view.events()
@@ -75,6 +83,61 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	//                                    //
 	////////////////////////////////////////
 
+
+	/*
+	 * Labels are changed to allow for merge
+	 */
+	var init_merge = function(e) {
+
+		// Change all other fields to merge
+		$("p.select").html("Merge").addClass("merge");
+		$(e.node).html("Deselect").addClass("selected");
+
+		// update view
+		view.set("merge", e);
+	}
+
+
+	/*
+	 * The color clicked is merged with the selected color
+	 */
+	var merge_colors = function(e) {
+		// Check if we unselect
+		if (e.node == view.get("merge").node) 
+			return reset_merge();
+
+		// If not, remove last clicked on color
+		var old_index = get_index(view.get("merge"));
+		var new_index = get_index(e);
+		var colors = view.get("colors");
+		colors.splice(new_index, 1);
+
+		// Update colors on Table
+		$(".color" + new_index).addClass("color" + old_index);
+		$(".color" + new_index).removeClass("color" + new_index);
+
+		// Remove last Events
+		reset_merge();
+	}
+
+
+	var get_index = function(e) {
+		var parts = e.keypath.split(".");
+		return parseInt(parts[parts.length - 1]);
+	}
+
+
+	/*
+	 * Turns selecters back to how they are initially
+	 */
+	var reset_merge = function() {
+		
+		// Change all other fields to merge
+		$("p.select").html("Select").removeClass("merge").removeClass("selected");
+
+		// Remove last Events
+		view.set("merge", false);
+	}
 
 
 	// Take matrix where each row is run-length encoded and decode it
@@ -130,10 +193,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	// Enables a color picker
 	var set_color = function(e) {
 		var c = e.context;
-		console.debug(c);
-		console.debug(e);
 		var bg = "rgb(" + c.r + ", " + c.g + ", " + c.b + ")";
-		console.debug($(e.node));
 		$(e.node).spectrum("show", {
 				color: bg,
 				//change: function(color) { update_table(color, index) },
