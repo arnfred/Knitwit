@@ -61,26 +61,18 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 	view.init = function(image_data) {
 		var canvas_id = "color-picker";
 		var image = new Image();
-		var crop = image_data.crop;
 		image.onload = function(){ // always fires the event.
 
-			// Set canvas image
-			var canvas = document.getElementById(canvas_id);
-			canvas.width = Math.min($(".col-md-6").width(), crop.w);
-			canvas.height = Math.ceil((canvas.width / crop.w) * crop.h);
-			canvas.getContext('2d').drawImage(image, crop.x, crop.y, crop.w, crop.h, 0, 0, canvas.width, canvas.height);
+			// Add image to canvas
+			var canvas = set_canvas_image(canvas_id, image_data().crop, image);
 
 			// Make pattern size fields update
-			var size_ratio = canvas.width / canvas.height;
-			view.set("size.ratio", size_ratio);
-			view.observe("size.height", function(new_val, old_val) {
-				view.set("size.width", Math.round(new_val * view.get("size.ratio")));
-			});
-			view.observe("size.width", function(new_val, old_val) {
-				view.set("size.height", Math.round(new_val / view.get("size.ratio")));
-			});
-		};
-		image.src = image_data.src;
+			set_size_listeners(canvas.width / canvas.height);
+
+			// Fade in color picker
+			$("#colors").fadeIn();
+		}
+		image.src = image_data().src;
 	}
 
 
@@ -91,9 +83,34 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 	////////////////////////////////////////
 
 
+	// Add listeners to the pattern size input boxes so the ratio is maintained
+	var set_size_listeners = function(size_ratio) {
+		view.set("size.ratio", size_ratio);
+		view.observe("size.height", function(new_val, old_val) {
+			view.set("size.width", Math.round(new_val * view.get("size.ratio")));
+		});
+		view.observe("size.width", function(new_val, old_val) {
+			view.set("size.height", Math.round(new_val / view.get("size.ratio")));
+		});
+	}
+
+
+
+	// Add image to canvas corresponding to the crop made in the crop section
+	var set_canvas_image = function(canvas_id, crop, image) {
+		// Set canvas image
+		var canvas = document.getElementById(canvas_id);
+		canvas.width = Math.min($(".col-md-6").width(), crop.w);
+		canvas.height = Math.ceil((canvas.width / crop.w) * crop.h);
+		canvas.getContext('2d').drawImage(image, crop.x, crop.y, crop.w, crop.h, 0, 0, canvas.width, canvas.height);
+
+		// Return canvas
+		return canvas;
+	}
+
 
 	// Create a color event on the body every time the mouse moves over the canvas
-	function get_canvas_color(canvas, e) {
+	var get_canvas_color = function(canvas, e) {
 
 		// Helper function (Refactor with underscore at some point)
 		function find_pos(obj) {

@@ -77,14 +77,24 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 		var image = new Image();
 		image.onload = function(){ // always fires the event.
 
+			// Init crop
+			init_crop(image);
+
+			// Disable jcrop if it's already set
+			if (view.jcrop != undefined) {
+				view.jcrop.destroy();
+			}
+
+			// reset height if previously set
+			$("#preview-image").css("height","")
+
 			// Attach cropping
 			$("#preview-image").Jcrop({
 				onSelect: function(data) { set_crop(data, image); },
 				onRelease: function() { init_crop(image); }
+			}, function() {
+				view.jcrop = this;
 			});
-
-			// Init crop
-			init_crop(image);
 
 		};
 		image.src = path;

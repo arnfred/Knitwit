@@ -2,7 +2,7 @@
 	clear:both;
 }
 
-.hide {
+.no-show {
 	display:none;
 }
 
@@ -71,10 +71,6 @@ ul.colors li {
 	margin-bottom:0.5em;
 }
 
-ul.colors li:last-child {
-	margin-right:0;
-}
-
 p.add-color {
 	float:left;
 	margin-top:1em;
@@ -129,6 +125,50 @@ td.point {
 	max-width:10px;
 	max-height:10px;
 	border: thin solid #3c3c3c;
+}
+
+
+/*
+ * Color Row
+ */
+ul.pattern-colors {
+	padding-left:0;
+}
+ul.pattern-colors li {
+	display:block;
+	float:left;
+	width:19%;
+	border:thin solid #c3c3c3;
+	margin-right:1%;
+	margin-bottom:0.5em;
+}
+ul.pattern-colors div {
+	height:3em;
+	width:100%;
+	border:none;
+}
+
+p.select {
+	margin:0;
+	width:100%;
+	text-align:center;
+	background-color:#fff;
+	padding:0.2em;
+	border-top:thin solid #c3c3c3;
+	cursor: pointer;
+}
+
+p.select:hover {
+	background-color:#dde;
+	color:black;
+}
+
+p.select.merge {
+	/*background-color:#eee;*/
+}
+p.select.selected {
+	background-color:#333;
+	color:#ddd;
 }
 
 /*
