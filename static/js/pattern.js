@@ -14,7 +14,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			colors : [{ 
 				r : 20,
 				g : 20,
-				b : 20
+				b : 20,
+				index : 0
 			}],
 			pattern : [{
 				row : []
@@ -85,6 +86,16 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 
 	/*
+	 * Add indices to a list of colors and add to view.
+	 * The indices are needed when we cycle through colors.
+	 */
+	view.set_colors = function(colors) {
+		var cs = _(colors).each(function(c, i) { c.index = i; });
+		view.set("colors", cs);
+	}
+
+
+	/*
 	 * Labels are changed to allow for merge
 	 */
 	var init_merge = function(e) {
@@ -115,7 +126,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		// Update colors on Table
 		$(".color" + new_index).addClass("color" + old_index);
 		$(".color" + new_index).removeClass("color" + new_index);
-
+		
 		// Remove last Events
 		reset_merge();
 	}
@@ -164,8 +175,12 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	// Cycles through the colors of the pattern
 	var correct_color = function(e) {
 		var current = e.context;
-		var nb_colors = view.get("colors").length;
-		view.set(e.keypath, (current + 1) % nb_colors);
+		var colors = view.get("colors")
+		var indices = _(colors).map(function(c, i) { return c.index });
+		var color_index = (indices.indexOf(current) + 1) % colors.length
+		var new_color = colors[color_index].index;
+
+		view.set(e.keypath, new_color);
 	}
 
 

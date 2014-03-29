@@ -28,7 +28,7 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			// Collect data
 			var params = collect_params();
 			// Set colors
-			pattern.set("colors", colors.get("colors"));
+			pattern.set_colors(colors.get("colors"));
 
 			// Replace PNG with gif of spinning gear
 			var image = new Image();
