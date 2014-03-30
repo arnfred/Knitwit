@@ -1,11 +1,32 @@
 <div class="row">
 
 	<div class="col-md-3 description">
-		<h3>Your Pattern</h3>
+		<h3>{{ name }}</h3>
 
-		<p>You can adjust the colors in your pattern by clicking on the colors.
-		To adjust individual fields of your pattern, click on them until they
+		<p>You can adjust the colors in the pattern by clicking on the colors.
+		To adjust individual fields of the pattern, click on them until they
 		have the correct color.</p>
+
+		{{ #save }}
+		<form id="save-form">
+			<p>
+			<label for="save-name">Save the pattern as:</label>
+			<input on-tap="clear-field" class="save-name form-control" id="save-name" type="text" value="{{ name }}" name="save-name"/>
+			</p>
+		</form>
+
+		<button on-tap="save-pattern" class="square-button" id="save-pattern">
+			<img src="/static/images/save.png" id="save" alt="save pattern"/>
+			<p>Save<p>
+		</button>
+		{{ /save }}
+
+		{{ #saved }}
+		<p id="saved">
+			Pattern saved here:
+		</p>
+		<p><a href="{{ href }}">{{ name }}</a></p>
+		{{ /saved }}
 	</div>
 
 
@@ -19,12 +40,8 @@
 			</li>
 			{{ /colors }}
 		</ul>
-	</div>
 
-	<!-- Table for pattern -->
-	<div class="col-md-6">
 		<table>
-
 			<!-- Table headers -->
 			<tr>
 				<th></th>

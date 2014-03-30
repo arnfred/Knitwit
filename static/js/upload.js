@@ -14,7 +14,8 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 		data : {
 			upload : {
 				show : true,
-				file : undefined
+				file : undefined,
+				file_name : "Upload File"
 			},
 			preview : undefined,
 			capture : undefined
@@ -55,6 +56,8 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 	// Uploads image to server and receives the url back
 	var upload_image = function(new_value, old_value) {
 
+		view.set("upload.file_name", new_value[0].name);
+
 		// Now upload image
 		var data = new FormData($("#upload-form"));
 		data.append('image', new_value[0]);
@@ -66,7 +69,9 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 			contentType: false,
 			processData: false,
 			type: 'POST',
-			success: function(data){ show_preview($.parseJSON(data).path); }
+			success: function(response){ 
+				show_preview($.parseJSON(response).path); 
+			}
 		});
 	}
 
