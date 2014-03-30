@@ -20,6 +20,11 @@
 .row.less-space {
 	margin-bottom: 4em;
 }
+
+#page {
+	margin: 4em 0;
+}
+
 /*
  * Upload part of site
  */
@@ -163,72 +168,20 @@ p.select:hover {
 	color:black;
 }
 
-p.select.merge {
-	/*background-color:#eee;*/
-}
 p.select.selected {
 	background-color:#333;
 	color:#ddd;
 }
 
 /*
- * Other stuff (delete?)
+ * Save
  */
+button.square-button img#save {
+	width:150px;
+	padding:1em 1em 0.5em 1em;
+}
 
-
-p.error {
-	display:none;
-	color:#881111;
+#saved {
 	font-weight:bold;
-}
-
-/*
- * Color picker
- */
-
-#color-row div.color, div.sp-replacer .sp-preview {
-	float:left;
-	margin-right: 0.5em;
-	margin-left: 0;
-}
-
-div.pick-colors {
-	display:none;
-}
-
-img#pick-image {
-	width:100%;
-}
-
-div.color, .sp-preview {
-	height:2em;
-	width:4em;
-	border: thin solid #c3c3c3;
-	background-color:rgb(255, 255, 255);
-	float: right;
-	margin-left: 0.5em;
-	cursor:pointer;
-}
-
-
-div.color-pick, div.color-add {
-	clear:both;
-}
-
-
-div#picker canvas {
-	border: thin solid #c3c3c3;
-}
-
-
-/*
- * Table
- */
-div#result {
-	display:none;
-}
-
-
-table {
-	margin: 2em 2em 2em 0;
+	margin-top:10px;
 }

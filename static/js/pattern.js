@@ -1,5 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
-	function($, _, css, pattern_template, R) {
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"], function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////
 	//                                    //
@@ -11,6 +10,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		template : pattern_template,
 		el : "pattern",
 		data : {
+			name : "Your Pattern",
 			colors : [{ 
 				r : 20,
 				g : 20,
@@ -21,7 +21,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 				row : []
 			}],
 			header : [],
-			merge : false
+			merge : false,
+			save : {
+				name : "My Pattern",
+			},
+			saved : false
 		}
 	});
 
@@ -45,6 +49,12 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			else merge_colors(e);
 			return false;
 		});
+
+		// Clear fields
+		view.on("clear-field", clear_field);
+
+		// Save pattern
+		view.on("save-pattern", save_pattern);
 	}
 
 	////////////////////////////////////////
@@ -53,24 +63,14 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	//                                    //
 	////////////////////////////////////////
 
-	view.init = function(encoded_pattern) {
+	view.init = function(encoded_pattern, colors) {
 
 		// Decode pattern
 		var pattern = decode(encoded_pattern.data);
 
-		// Set header
-		var header = _.range(pattern[0].row.length);
-
-		// Display json
-		view.set("header", header);
-		view.set("pattern", pattern);
-
-		// Add css rules
-		_(view.get("colors")).each(function (color, index) {
-			var rgb = "rgb(" + color.r + "," + color.g + "," + color.b + ")";
-			css.add("td.color" + index, "background-color: " + rgb);
-		});
-
+		// Create pattern
+		view.create_pattern(pattern, colors);
+		
 		// Fade in pattern
 		$("#pattern").fadeIn();
 
@@ -95,6 +95,31 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	}
 
 
+
+	/*
+	 * Generate pattern based on pattern
+	 */
+	view.create_pattern = function(pattern, colors) {
+
+		// Set header
+		var header = _.range(pattern[0].row.length);
+
+		// Display json
+		view.set("header", header);
+		view.set("pattern", pattern);
+
+		// Add css rules
+		_(colors).each(function (color, index) {
+			var rgb = "rgb(" + color.r + "," + color.g + "," + color.b + ")";
+			css.add("td.color" + index, "background-color: " + rgb);
+		});
+
+		// Set colors
+		view.set_colors(colors);
+
+	}
+
+
 	/*
 	 * Labels are changed to allow for merge
 	 */
@@ -107,6 +132,32 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		// update view
 		view.set("merge", e);
 	}
+
+
+	// Clear text fields
+	var clear_field = function(e) {
+		if (e.context.name == "My Pattern") {
+			$(e.node).val("")
+		}
+	}
+
+
+	// Save pattern
+	var save_pattern = function(e) {
+		// get params
+		var params = { 
+			pattern : JSON.stringify(view.get("pattern")), 
+			name : view.get("save.name"), 
+			colors : JSON.stringify(view.get("colors"))
+		};
+
+		// Send json to get result
+		$.post("/save/", params, function(url_data) {
+			view.set("save", false);
+			view.set("saved", { href : "/p/" + url_data.id, name : params.name });
+		}, "json");
+	}
+
 
 
 	/*
@@ -187,7 +238,13 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	var add_color_picker = function(index, elem) {
 
 		var set_color = function(color) {
-			$(elem).css("background-color", color.toHexString());
+			var rgb = color.toRgb();
+			view.set("colors.0", {
+				r : rgb.r,
+				g : rgb.g,
+				b : rgb.b,
+				index : index
+			})
 		}
 
 		var update_table = function(color, i) {
@@ -204,21 +261,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			hide: set_color
 		});
 	}
-
-	// Enables a color picker
-	var set_color = function(e) {
-		var c = e.context;
-		var bg = "rgb(" + c.r + ", " + c.g + ", " + c.b + ")";
-		$(e.node).spectrum("show", {
-				color: bg,
-				//change: function(color) { update_table(color, index) },
-				//move: set_color,
-				//show: set_color,
-				//hide: set_color
-			});
-		}
-	
-
 
 
 	////////////////////////////////////////
