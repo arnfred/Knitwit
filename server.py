@@ -104,7 +104,6 @@ class pattern_json :
 class save :
   def POST(self) :
     d = web.input(pattern = "", name = "", colors = "")
-    print(d)
     
     # Get a string with all the data
     data = json.dumps({ 
