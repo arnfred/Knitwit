@@ -157,7 +157,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 										 .sort()
 										 .map(function(n,i) { return [n,i] })
 										 .value());
-		console.debug(uniques)
 
 		// For each element in the pattern, replace it according the the 
 		// 'uniques' map
@@ -178,9 +177,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 	// Save pattern
 	var save_pattern = function(e) {
-		console.debug(view.get("pattern"))
 		var pattern = compress_pattern(view.get("pattern"));
-		console.debug(pattern)
 		// get params
 		var params = { 
 			pattern : JSON.stringify(pattern), 
