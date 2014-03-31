@@ -31,6 +31,9 @@
 #page {
 	margin: 4em 5%;
 }
+button {
+	-webkit-appearance: none;
+}
 
 /*
  * Banner & Title
