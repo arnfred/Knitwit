@@ -1,4 +1,5 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"], function($, _, css, pattern_template, R) {
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"], 
+	function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////
 	//                                    //
@@ -282,9 +283,17 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 	var add_color_picker = function(index, elem) {
 
+
 		var set_color = function(color) {
+
+			var indices = _.object(
+				_(view.get("colors")).chain().pluck("index").map(function(n, i) {
+					return [n, i];
+				}).value());
+			var array_index = indices[index];
+
 			var rgb = color.toRgb();
-			view.set("colors.0", {
+			view.set("colors." + array_index, {
 				r : rgb.r,
 				g : rgb.g,
 				b : rgb.b,

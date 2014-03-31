@@ -24,7 +24,13 @@ define(["lib/underscore"], function(_) {
 
 	// Add rule to css
 	css.add = function(name, style) {
-		css._default_sheet.addRule(name, style , 1);
+		var sheet = css._default_sheet;
+		if (sheet.insertRule) { // firefox
+			sheet.insertRule(name + " { " + style + "; }", sheet.cssRules.length);
+		}
+		else {
+			sheet.addRule(name, style , 1);
+		}
 		rescan();
 	}
 
@@ -72,7 +78,7 @@ define(["lib/underscore"], function(_) {
 		// Find all css rules
 		var rules = _.chain(document.styleSheets)
 			.map(function(sheet, sheet_key) { 
-				var rule_list = sheet.rules || sheet.getRules;
+				var rule_list = sheet.cssRules || sheet.rules;
 				var rules = _(rule_list).map(function(v,k) {
 					return { 'key' : k, 'value' : v, 'sheet' : sheet_key };
 				});
