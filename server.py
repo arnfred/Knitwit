@@ -25,6 +25,12 @@ urls = (
 # Define template
 render = web.template.render('templates/')
 
+# Run the app
+if __name__ == "__main__": 
+  app = web.application(urls, globals())
+  app.run()     
+
+
 # Index page displays start page
 class index :
   def GET(self):
@@ -137,11 +143,6 @@ class page :
       pattern = json.loads(fp.read())
     return render.page(pattern['name'], page_id)
 
-
-# Run the app
-if __name__ == "__main__": 
-  app = web.application(urls, globals())
-  app.run()     
 
 
 def make_thumbnail(path, size = (200, 200)) :
