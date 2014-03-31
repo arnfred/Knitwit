@@ -57,3 +57,5 @@ def run_length_encode(data) :
     def encode_row(row) :
         return [(len(list(g)), int(k)) for k,g in groupby(row)]
     return map(encode_row, data)
+
+

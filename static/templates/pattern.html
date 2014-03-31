@@ -3,9 +3,11 @@
 	<div class="col-md-3 description">
 		<h3>{{ name }}</h3>
 
-		<p>You can adjust the colors in the pattern by clicking on the colors.
-		To adjust individual fields of the pattern, click on them until they
-		have the correct color.</p>
+		<p>You can change the colors in the pattern to suit your yarn by 
+		clicking on the color fields. If you want to reduce the amount of 
+		colors in the pattern, you can select any color and merge it with other 
+		colors. You can change individual stichtes in the pattern by clicking 
+		on them to cycle through the colors.</p>
 
 		{{ #save }}
 		<form id="save-form">
@@ -15,8 +17,9 @@
 			</p>
 		</form>
 
-		<button on-tap="save-pattern" class="square-button" id="save-pattern">
-			<img src="/static/images/save.png" id="save" alt="save pattern"/>
+		<button on-tap="save-pattern" id="save-pattern">
+			<img src="/static/images/save.png" class="button-img" id="save" 
+			alt="save pattern"/>
 			<p>Save<p>
 		</button>
 		{{ /save }}

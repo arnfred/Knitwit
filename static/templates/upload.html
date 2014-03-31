@@ -9,10 +9,26 @@
 	<!-- Upload description -->
 	<div class="col-md-3 description" id="upload-desc">
 		<h3>Upload or Take Image</h3>
-		<p>To make a knitting pattern, upload an image or take a photo with your webcam</p>
+		<p>To make a knitting pattern, upload an image an image from your 
+		col-md-6computer or take a photo with your webcam. If you take a photo, 
+		make sure to allow the browser to use your webcam.
+		</p>
 	</div>
 
-	<!-- Upload and Camera buttons -->
+
+	<div class="col-md-6" id="upload-buttons">
+		<button on-tap="upload-image" class="half-row" id="upload-image">
+			<img src="/static/images/upload.png" class="button-img" alt="upload 
+			image"/>
+			<p>{{ file_name }}<p>
+		</button>
+		<button on-tap="capture-image" class="half-row" id="capture-image">
+			<img src="/static/images/camera.png"class="button-img"  alt="take 
+			photo"/>
+			<p>Take Photo<p>
+		</button>
+	</div>
+	<!-- Upload and Camera buttons 
 	<div class="col-md-6" id="upload-buttons">
 		<div class="row">
 			<div class="col-md-6">
@@ -27,8 +43,9 @@
 					<p>Take Photo<p>
 				</button>
 			</div>
-		<div class="raw">
+		</div>
 	</div>
+	-->
 
 </div>
 {{ /upload }}
@@ -40,7 +57,7 @@
 	<!-- Preview description -->
 	<div class="col-md-3 description" id="capture-desc">
 		<h3>Take photo</h3>
-		<p>Tap on the video to take a photo</p>
+		<p>When you're ready, click on the image to take a photo</p>
 	</div>
 
 	<!-- Show image preview for cropping -->
@@ -58,7 +75,9 @@
 	<!-- Preview description -->
 	<div class="col-md-3 description" id="preview-desc">
 		<h3>Crop Image</h3>
-		<p>You can crop your image by selecting the area of the image you would like to use. Click 'Next' when you are satisfied with the result.</p>
+		<p>Your image is shown on the right. You can crop your image by 
+		selecting the area of the image you would like to use. Scroll down when 
+		you are satisfied.</p>
 	</div>
 
 	<!-- Show image preview for cropping -->

@@ -142,11 +142,48 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	}
 
 
+
+	// This function takes a matrix containing only, say, 1's, 3's and 5's and 
+	// renames all 1's to 0's, all 3's to 1's and all 5's to 2's
+	var compress_pattern = function(pattern) {
+
+		// Construct object with the keys being every unique value in pattern 
+		// and the corresponding values the index of the value's position in a 
+		// sorted list of all values
+		var uniques = _.object(_(pattern).chain()
+										 .pluck("row")
+										 .flatten()
+										 .uniq()
+										 .sort()
+										 .map(function(n,i) { return [n,i] })
+										 .value());
+		console.debug(uniques)
+
+		// For each element in the pattern, replace it according the the 
+		// 'uniques' map
+		var p = _(pattern).clone();
+		_(p).each(function (row, index) {
+			var new_row = { 
+				row : _(row.row).map(function(elem) {
+					return uniques[elem];
+				})
+			}
+			p[index] = new_row
+		});
+
+		return p;
+	}
+
+
+
 	// Save pattern
 	var save_pattern = function(e) {
+		console.debug(view.get("pattern"))
+		var pattern = compress_pattern(view.get("pattern"));
+		console.debug(pattern)
 		// get params
 		var params = { 
-			pattern : JSON.stringify(view.get("pattern")), 
+			pattern : JSON.stringify(pattern), 
 			name : view.get("save.name"), 
 			colors : JSON.stringify(view.get("colors"))
 		};
@@ -169,23 +206,34 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			return reset_merge();
 
 		// If not, remove last clicked on color
-		var old_index = get_index(view.get("merge"));
-		var new_index = get_index(e);
+		var selected_index = get_index(view.get("merge"));
+		var merged_index = get_index(e);
 		var colors = view.get("colors");
-		colors.splice(new_index, 1);
+		colors.splice(merged_index, 1);
 
-		// Update colors on Table
-		$(".color" + new_index).addClass("color" + old_index);
-		$(".color" + new_index).removeClass("color" + new_index);
-		
+		// Update each row in the pattern
+		var pattern = view.get("pattern");
+		_(pattern).each(function(row, index) {
+			var new_row = _(row.row).map(function(elem) {
+				if (elem === merged_index) return selected_index;
+				else return elem;
+			})
+			pattern[index] = { row : new_row }
+		});
+		view.update("pattern");
+
 		// Remove last Events
 		reset_merge();
 	}
 
 
+	// Returns the original index of the color clicked on given an event 
+	// corresponding to the click
 	var get_index = function(e) {
 		var parts = e.keypath.split(".");
-		return parseInt(parts[parts.length - 1]);
+		var color_nb = parseInt(parts[parts.length - 1]);
+		var colors = view.get("colors");
+		return colors[color_nb].index;
 	}
 
 
