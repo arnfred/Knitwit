@@ -1,4 +1,4 @@
-PIL==1.1.7
+-e hg+https://bitbucket.org/etienned/pil-2009-raclette/#egg=PIL
 numpy==1.6.1
 simplejson==2.3.2
 web.py==0.37

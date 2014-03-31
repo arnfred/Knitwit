@@ -62,9 +62,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 		var data = new FormData();
 		data.append('image', new_value[0]);
 
-		console.debug(new_value);
-		console.debug(data)
-
 		$.ajax({
 			url: '/upload/',
 			data: data,
