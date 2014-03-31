@@ -6,9 +6,6 @@
 	display:none;
 }
 
-.description {
-	padding-left:3em;
-}
 .description h3 {
 	margin-top:10px;
 }
@@ -21,9 +18,34 @@
 	margin-bottom: 4em;
 }
 
-#page {
-	margin: 4em 0;
+.half-row {
+	float: left;
+	width:48%;
+	margin-right:0 4%;
 }
+.half-row:last-child {
+	margin-right:0;
+	margin-left:4%;
+}
+
+#page {
+	margin: 4em 5%;
+}
+
+/*
+ * Banner & Title
+ */
+#banner {
+	height:245px;
+	overflow:hidden;
+	border-bottom:thin solid #c3c3c3;
+	background-image:url("/static/images/banner.png");
+}
+
+#title {
+	padding-left:15px;
+}
+
 
 /*
  * Upload part of site
@@ -33,13 +55,9 @@ div#upload {
 	margin-top: 4em;
 }
 
-button.square-button {
-	float: left;
-	width:100%;
-}
 
-button.square-button img {
-	width: 200px;
+img.button-img {
+	width: 75%;
 }
 
 img#preview-image {
@@ -93,21 +111,22 @@ p.add-color:hover {
  * Pattern Size
  */
 form#size-form {
-	margin-top:1em;
+	margin-top:2.5%;
 }
 
 form#size-form label {
-	width: 10em;
+	width: 50%;
 	font-weight:normal;
 }
 
 form#size-form input {
 	display:inline;
-	width:5em;
+	width:35%;
 }
 div#pattern-size {
 	text-align:center;
-	margin-top:3em;
+	margin-top:5%;
+	padding-top:10px;
 }
 
 /*
@@ -125,10 +144,10 @@ td.header {
 }
 
 td.point {
-	min-width:10px;
-	min-height:10px;
-	max-width:10px;
-	max-height:10px;
+	min-width:11px;
+	min-height:11px;
+	max-width:11px;
+	max-height:11px;
 	border: thin solid #3c3c3c;
 }
 
@@ -176,9 +195,13 @@ p.select.selected {
 /*
  * Save
  */
-button.square-button img#save {
-	width:150px;
-	padding:1em 1em 0.5em 1em;
+button#save-pattern, input#save-name {
+	width:100%;
+}
+
+img#save {
+	max-width:10em;
+	padding:0.5em;
 }
 
 #saved {
