@@ -208,3 +208,7 @@ img#save {
 	font-weight:bold;
 	margin-top:10px;
 }
+
+#saved a {
+	text-decoration:underline;
+}
