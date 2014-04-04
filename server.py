@@ -46,6 +46,7 @@ class upload :
     path = random_file_name("static/data/uploads/", ".jpg")
     print(path)
     print(sorted(os.listdir("/".join(path.split("/")[0:-1]))))
+    print("here")
 
     # Open path and save file
     with open(path, 'wb') as saved:
