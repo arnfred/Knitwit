@@ -1,4 +1,5 @@
--e hg+https://bitbucket.org/etienned/pil-2009-raclette/#egg=PIL
+-e git://github.com/errkk/gitpil.git#egg=PIL
+Pillow==1.7.8
 numpy==1.6.1
 simplejson==2.3.2
 web.py==0.37
