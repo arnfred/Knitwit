@@ -15,8 +15,8 @@ def open_image(path, colors, max_height = 60, crop = None) :
 		# Resize to max height
 		image.transform(resize="x%i" % max_height)
 		# Get numpy array with image data
-		image.save(filename="tmp.bmp")
-		data = get_data(PImage.open("tmp.bmp"))
+		image.save(filename="tmp.tiff")
+		data = get_data(PImage.open("tmp.tiff"))
 		# Remove alpha information from image
 		# Posterize image to fewer colors
 		return posterize(data, colors)
