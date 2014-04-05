@@ -80,6 +80,7 @@ class photo :
       img.format = 'jpeg'
       img.save(filename=path_jpg)
 
+
     return json.dumps({ 'path' : path_jpg })
 
 
