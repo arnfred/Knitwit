@@ -1,5 +1,3 @@
--e git://github.com/errkk/gitpil.git#egg=PIL
-#Pillow==1.7.8
 numpy==1.6.1
 web.py==0.37
 wand==0.3.7
