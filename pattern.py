@@ -14,7 +14,7 @@ def open_image(path, colors, max_height = 60, crop = None) :
 			image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
 		# Resize to max height
 		image.transform(resize="x%i" % max_height)
-		image.format = 'bmp'
+		image.format = 'bmp2'
 		# Get numpy array with image data
 		image.save(filename="tmp.bmp")
 		data = get_data(PImage.open("tmp.bmp"))
