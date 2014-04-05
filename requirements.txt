@@ -1,4 +1,4 @@
-#-e git://github.com/errkk/gitpil.git#egg=PIL
+-e git://github.com/errkk/gitpil.git#egg=PIL
 #Pillow==1.7.8
 numpy==1.6.1
 simplejson==2.3.2
