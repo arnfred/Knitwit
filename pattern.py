@@ -1,23 +1,22 @@
-from PIL import Image
 import numpy
+from binascii import a2b_base64
 import math
 from itertools import groupby
+from wand.image import Image
+from PIL import Image as PImage
 
 def open_image(path, colors, max_height = 60, crop = None) :
 	with open(path) as fp :
 		# Open image
-		image_original = Image.open(fp)
-		# Remove alpha channel
-		image_no_alpha = image_original.convert("RGB")
+		image = Image(file=fp)
 		# Crop
 		if crop != None :
-			image_cropped = image_no_alpha.crop((crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y']))
-		else :
-			image_cropped = image_no_alpha
+			image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
 		# Resize to max height
-		image = resize(image_cropped, max_height)
+		image.transform(resize="x%i" % max_height)
 		# Get numpy array with image data
-		data = get_data(image)
+		image.save(filename="tmp.bmp")
+		data = get_data(PImage.open("tmp.bmp"))
 		# Remove alpha information from image
 		# Posterize image to fewer colors
 		return posterize(data, colors)
