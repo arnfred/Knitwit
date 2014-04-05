@@ -4,12 +4,12 @@ import random, string
 import os
 import json
 import numpy
-from PIL import Image
 import re
 import pattern
 from StringIO import StringIO
 from binascii import a2b_base64
 import itertools
+from wand.image import Image
 
 
 # Define pages
@@ -49,9 +49,10 @@ class upload :
     with open(path, 'wb') as saved:
       im_file = form['image'].file
       # We open file with PIL to save as jpg
-      im = Image.open(im_file)
-      im_norm = normalize_image(im);
-      im.save(saved, 'JPEG')
+      with Image(file=im_file) as img :
+      #im_norm = normalize_image(im);
+	img.format = 'jpeg'
+	img.save(filename=path)
     return json.dumps({ 'path' : path })
 
 
@@ -75,13 +76,9 @@ class photo :
     binary_data = a2b_base64(im_file)
 
     # Write binary data
-    with open(path_png, 'wb') as fd :
-      fd.write(binary_data)
-
-    # Open image and save as jpg
-    im = Image.open(path_png)
-    im_norm = normalize_image(im);
-    im_norm.save(path_jpg, 'JPEG')
+    with Image(blob=binary_data) as img :
+      img.format = 'jpeg'
+      img.save(filename=path_jpg)
 
     return json.dumps({ 'path' : path_jpg })
 
