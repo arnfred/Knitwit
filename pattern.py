@@ -37,7 +37,6 @@ def round(n) :
 	return math.floor(n)
 
 
-
 def get_data(image) :
 	width, height = image.size
 	data_array = numpy.array(image.getdata(), dtype=numpy.uint8)
@@ -52,6 +51,7 @@ def posterize(data, colors) :
 	distances = [numpy.sum(d**2,axis=-1)**(1./2) for d in data_minus_colors]
 	# Find the shortest norm to find the closest color
 	return numpy.argmin(distances, axis=0)
+
 
 def run_length_encode(data) :
     def encode_row(row) :
