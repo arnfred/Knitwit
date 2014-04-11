@@ -22,33 +22,38 @@
   <body>
     <div id="banner"></div>
     <div id="page">
-      <div class="row">
-	<div id="title" class="col-md-6 col-md-offset-3">
-	  <h1>Create a Pattern</h1>
-	  <p>I've made this page to help people create knitting patterns from 
-	  photos or images. The process is simple; you upload an image, adjust 
-	  it and generate a pattern. Once you've made the pattern you can save 
-	  it and share it so others can use and improve it.</p>
-	</div>
-      </div>
-      <div id="upload"></div>
-      <div class="no-show" id="colors"></div>
-      <div class="no-show" id="pattern"></div>
+        <div class="row">
+            <div id="title" class="col-md-6 col-md-offset-3">
+                <h1>Create a Pattern</h1>
+                <p>I've made this page to help people create knitting patterns from 
+                photos or images. The process is simple; you upload an image, adjust 
+                it and generate a pattern. Once you've made the pattern you can save 
+                it and share it so others can use and improve it.</p>
+            </div>
+        </div>
+        <div id="upload"></div>
+        <div class="no-show" id="colors"></div>
+        <div class="no-show" id="pattern"></div>
+        <div id="footer" class="row">
+            <div class="col-md-9">
+                <p>Code and Design by <a href="mailto:jonas@ifany.org">Jonas Toft Arnfred</a></p>
+            </div>
+        </div>
     </div>
 
       <script src="/static/lib/curl.js" type="text/javascript"></script>
       <script>
-	curl({ 
-	    paths: { 
-	      lib: '/static/lib/',
-	      js: '/static/js/',
-	      templates : '/static/templates/'
-	    } 
-	  },
-	  ["js/controller", "domReady!"],
-	  function(controller) {
-	    // Nothing here. Check controller for initialization
-	  });
+        curl({ 
+            paths: { 
+            lib: '/static/lib/',
+            js: '/static/js/',
+            templates : '/static/templates/'
+            } 
+        },
+        ["js/controller", "domReady!"],
+        function(controller) {
+            // Nothing here. Check controller for initialization
+        });
       </script>
   </body>
 </html>
