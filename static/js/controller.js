@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"], 
+define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"],
 	function ($, _, upload, colors, pattern, R) {
 
 
@@ -29,7 +29,7 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			var params = collect_params();
 
 			// Get colors
-			var pattern_colors = colors.get("colors");
+			var pattern_colors = colors.get("colors").slice(0);
 
 			// Replace PNG with gif of spinning gear
 			var image = new Image();
