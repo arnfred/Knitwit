@@ -96,24 +96,24 @@ video#video {
  * Colors
  */
 
-
 ul.colors {
 	margin-top:0.3em;
-	padding:0;
-	width:100%;
-	display:block;
+	padding-left:0;
 }
-
 ul.colors li {
 	display:block;
 	float:left;
-	/*width:8em;*/
 	width:19%;
-	height:4em;
 	border:thin solid #c3c3c3;
 	margin-right:1%;
 	margin-bottom:0.5em;
 }
+ul.colors div {
+	height:3em;
+	width:100%;
+	border:none;
+}
+
 
 p.add-color {
 	float:left;
@@ -176,22 +176,6 @@ td.point {
 /*
  * Color Row
  */
-ul.pattern-colors {
-	padding-left:0;
-}
-ul.pattern-colors li {
-	display:block;
-	float:left;
-	width:19%;
-	border:thin solid #c3c3c3;
-	margin-right:1%;
-	margin-bottom:0.5em;
-}
-ul.pattern-colors div {
-	height:3em;
-	width:100%;
-	border:none;
-}
 
 p.select {
 	margin:0;

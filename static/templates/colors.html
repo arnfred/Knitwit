@@ -18,7 +18,10 @@
 		<!-- color groups -->
 		<ul class="colors" id="change-color">
 			{{ #colors }}
-			<li on-click="change-color" style="background-color:rgb({{r}},{{g}},{{b}})"></li>
+			<li>
+				<div on-click="change-color" class="color" style="background-color:rgb({{r}},{{g}},{{b}})"></div>
+			    <p on-click="delete-color" class="select">Delete</p>
+            </li>
 			{{ /colors }}
 			<p class="add add-color" on-click="add-color">
 				Add color
