@@ -44,8 +44,8 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 		// Add new color field to group
 		view.on("add-color", add_color);
 
-		// Add new color groups
-		view.on("add-group", add_group);
+        // Delete color
+        view.on("delete-color", delete_color);
 
 		// Change color field
 		view.on("change-color", change_color);
@@ -153,25 +153,17 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 		// Add to view
 		var colors = view.get(event_data.keypath + ".colors");
 		colors.push(new_color);
-		$("#change-color li").last().trigger("click")
+		$("#change-color div").last().trigger("click")
 	}
 
 
-	// Add new group
-	var add_group = function(event_data) {
-		// Init new group
-		var new_group = {
-			colors : [{
-				r : 250,
-				g : 250,
-				b : 250
-			}]
-		}
-
-		var groups = view.get("groups");
-		groups.push(new_group);
-	}
-
+    // Delete new color from group
+    var delete_color = function(event_data) {
+		var parts = event_data.keypath.split(".");
+		var merged_index = parseInt(parts[parts.length - 1]);
+		var colors = view.get("colors");
+		colors.splice(merged_index, 1);
+    }
 
 	// Change existing color
 	var change_color = function(event_data) {
@@ -201,7 +193,7 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 
 		});
 	}
-	
+
 
 	////////////////////////////////////////
 	//                                    //
@@ -211,6 +203,6 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 
 	view.events();
 	return view;
-	
+
 
 });
