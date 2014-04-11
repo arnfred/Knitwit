@@ -26,9 +26,9 @@ urls = (
 render = web.template.render('templates/')
 
 # Run the app
-if __name__ == "__main__": 
+if __name__ == "__main__":
   app = web.application(urls, globals())
-  app.run()     
+  app.run()
 
 
 # Index page displays start page
@@ -96,10 +96,6 @@ class pattern_json :
     # Create pattern matrix
     data = pattern.open_image(image, colors, stitches["height"], crop)
 
-    # Check if pattern should be turned
-    if data.shape[1] > data.shape[0] and data.shape[1] > 70 :
-      data = numpy.rot90(data)
-
     # Runlength encode data and send to client
     encoded_data = pattern.run_length_encode(data)
     return json.dumps({ 'data' : encoded_data })
@@ -110,7 +106,7 @@ class save :
     d = web.input(pattern = "", name = "", colors = "")
 
     # Get a string with all the data
-    data = json.dumps({ 
+    data = json.dumps({
       "pattern" : json.loads(d.pattern),
       "name" : str(d.name),
       "colors" : json.loads(d.colors)

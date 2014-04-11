@@ -29,7 +29,7 @@
 }
 
 #page {
-	margin: 4em 5%;
+	margin: 3em 5%;
 }
 button {
 	-webkit-appearance: none;
@@ -65,6 +65,7 @@ img#arrow {
 #footer p {
     float:right;
     font-style:italic;
+    margin:1em 0;
 }
 
 
