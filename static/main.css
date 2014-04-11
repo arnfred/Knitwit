@@ -49,6 +49,14 @@ button {
 	padding-left:15px;
 }
 
+/*
+ * Footer
+ */
+#footer p {
+    float:right;
+    font-style:italic;
+}
+
 
 /*
  * Upload part of site
