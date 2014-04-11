@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"], 
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
 	function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////
@@ -12,7 +12,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		el : "pattern",
 		data : {
 			name : "Your Pattern",
-			colors : [{ 
+			colors : [{
 				r : 20,
 				g : 20,
 				b : 20,
@@ -42,7 +42,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		view.on("correct-color", correct_color);
 
 		// Set color with color picker
-		$("#pattern-colors li div").each(add_color_picker);	
+		$("#pattern-colors li div").each(add_color_picker);
 
 		// Change all other colors to merge with set-merge
 		view.on("set-merge", function(e) {
@@ -71,7 +71,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 		// Create pattern
 		view.create_pattern(pattern, colors);
-		
+
 		// Fade in pattern
 		$("#pattern").fadeIn();
 
@@ -144,12 +144,12 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 
 
-	// This function takes a matrix containing only, say, 1's, 3's and 5's and 
+	// This function takes a matrix containing only, say, 1's, 3's and 5's and
 	// renames all 1's to 0's, all 3's to 1's and all 5's to 2's
 	var compress_pattern = function(pattern) {
 
-		// Construct object with the keys being every unique value in pattern 
-		// and the corresponding values the index of the value's position in a 
+		// Construct object with the keys being every unique value in pattern
+		// and the corresponding values the index of the value's position in a
 		// sorted list of all values
 		var uniques = _.object(_(pattern).chain()
 										 .pluck("row")
@@ -159,11 +159,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 										 .map(function(n,i) { return [n,i] })
 										 .value());
 
-		// For each element in the pattern, replace it according the the 
+		// For each element in the pattern, replace it according the the
 		// 'uniques' map
 		var p = _(pattern).clone();
 		_(p).each(function (row, index) {
-			var new_row = { 
+			var new_row = {
 				row : _(row.row).map(function(elem) {
 					return uniques[elem];
 				})
@@ -180,9 +180,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	var save_pattern = function(e) {
 		var pattern = compress_pattern(view.get("pattern"));
 		// get params
-		var params = { 
-			pattern : JSON.stringify(pattern), 
-			name : view.get("save.name"), 
+		var params = {
+			pattern : JSON.stringify(pattern),
+			name : view.get("save.name"),
 			colors : JSON.stringify(view.get("colors"))
 		};
 
@@ -190,6 +190,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		$.post("/save/", params, function(url_data) {
 			view.set("save", false);
 			view.set("saved", { href : "/p/" + url_data.id, name : params.name });
+            // Change location
+            window.location = "/p/" + url_data.id;
 		}, "json");
 	}
 
@@ -200,7 +202,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	 */
 	var merge_colors = function(e) {
 		// Check if we unselect
-		if (e.node == view.get("merge").node) 
+		if (e.node == view.get("merge").node)
 			return reset_merge();
 
 		// If not, remove last clicked on color
@@ -225,7 +227,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	}
 
 
-	// Returns the original index of the color clicked on given an event 
+	// Returns the original index of the color clicked on given an event
 	// corresponding to the click
 	var get_index = function(e) {
 		var parts = e.keypath.split(".");
@@ -239,7 +241,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	 * Turns selecters back to how they are initially
 	 */
 	var reset_merge = function() {
-		
+
 		// Change all other fields to merge
 		$("p.select").html("Select").removeClass("merge").removeClass("selected");
 
@@ -259,8 +261,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 		// Create list containing 'elem[0]' copies of 'elem[1]'
 		function elem_decode(elem) {
-			return (Array.apply(0, Array(elem[0]))).map(function() { 
-				return elem[1]; 
+			return (Array.apply(0, Array(elem[0]))).map(function() {
+				return elem[1];
 			});
 		}
 
