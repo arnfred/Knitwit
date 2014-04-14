@@ -205,9 +205,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		if (e.node == view.get("merge").node)
 			return reset_merge();
 
-        // debug
-        console.debug(e)
-
 		// If not, remove last clicked on color
 		var selected_index = get_index(view.get("merge"));
 		var merged_index = get_index(e);
