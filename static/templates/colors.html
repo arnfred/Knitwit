@@ -53,8 +53,10 @@
 				<label for="pattern-width">Pattern width:</label>
 				<input class="pattern-size form-control" id="pattern-width" type="text" value="{{ width }}" name="width"/>
 				</p><p>
-				<label for="pattern-height">Pattern height:</label>
-				<input id="pattern-height" class="pattern-size form-control" type="text" value="{{ height }}" name="height"/>
+				<label for="pattern-height">4 inch gauge:</label>
+				<input id="pattern-gauge-x" class="pattern-gauge form-control" type="text" value="{{ gauge.x }}" name="gauge-x"/>
+                x
+				<input id="pattern-gauge-y" class="pattern-gauge form-control" type="text" value="{{ gauge.y }}" name="gauge-y"/>
 				</p>
 			</form>
 			{{ /size }}
