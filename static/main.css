@@ -49,6 +49,18 @@ button {
 	padding-left:15px;
 }
 
+#title h1 {
+    font-size:8em;
+    font-weight:bold;
+    margin:0;
+    line-height:1;
+    padding:0;
+}
+
+#title h3 {
+    margin:0 0 1em 0;
+}
+
 #example img {
     float:left;
     width:40%;
