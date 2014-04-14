@@ -132,13 +132,24 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
         // Set gauge in data
         view.set("gauge", gauge);
 
-        // Find height
-        var width = 11;
-        var height = (gauge.y / gauge.x) * width
+        // Get ratio
+        var ratio = (gauge.y / gauge.x);
+
+        if (ratio > 1) {
+            // Find height
+            var width = 11;
+            var height = (gauge.y / gauge.x) * width;
+        } else {
+            // Find height
+            var height = 11;
+            var width = (gauge.x / gauge.y) * height;
+        }
+
+        console.debug("height: " + height + ", width: " + width);
 
         // Set css
-        var width_rule = "width: " + width + "px; min-width: " + width + "px";
-        var height_rule = "height: " + height + "px; min-height: " + height + "px";
+        var width_rule = "width: " + width + "px; min-width: " + width + "px; max-width: " + width + "px";
+        var height_rule = "height: " + height + "px; min-height: " + height + "px; max-width: " + width + "px";
         css.add("td.point", width_rule + "; " + height_rule);
     }
 
