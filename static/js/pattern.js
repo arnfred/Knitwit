@@ -205,11 +205,15 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		if (e.node == view.get("merge").node)
 			return reset_merge();
 
+        // debug
+        console.debug(e)
+
 		// If not, remove last clicked on color
 		var selected_index = get_index(view.get("merge"));
 		var merged_index = get_index(e);
+        var merged_position = get_position(e);
 		var colors = view.get("colors");
-		colors.splice(merged_index, 1);
+		colors.splice(merged_position, 1);
 
 		// Update each row in the pattern
 		var pattern = view.get("pattern");
@@ -217,7 +221,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			var new_row = _(row.row).map(function(elem) {
 				if (elem === merged_index) return selected_index;
 				else return elem;
-			})
+			});
 			pattern[index] = { row : new_row }
 		});
 		view.update("pattern");
@@ -235,6 +239,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		var colors = view.get("colors");
 		return colors[color_nb].index;
 	}
+
+    // Returns the position of event in array, i.e 'colors.0' returns 0
+    var get_position = function(e) {
+        return parseInt(_(e.keypath.split(".")).last())
+    }
 
 
 	/*
