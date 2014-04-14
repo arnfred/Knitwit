@@ -5,11 +5,9 @@ from wand.image import Image
 from PIL import Image as PImage
 
 
-def open_image(path, colors, max_height = 60, crop = None, gauge = (10,15)) :
+def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
     # Find height ratio
-    height_ratio = gauge[1] / float(gauge[0])
-    height_percent = round(height_ratio*100)
-    print(height_percent)
+    height_ratio = gauge[0] / float(gauge[1])
 
     # Open image, resize and posterize
     with open(path) as fp :
@@ -19,7 +17,7 @@ def open_image(path, colors, max_height = 60, crop = None, gauge = (10,15)) :
         if crop != None :
             image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
             # Resize to width and height ratio
-            resize(image, 60, 1.5)
+            resize(image, width, height_ratio)
             # Save as ppm
             image.format = 'ppm'
             # Get numpy array with image data

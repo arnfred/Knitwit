@@ -1,4 +1,4 @@
-define(["js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"], 
+define(["js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"],
 	function (pattern, R) {
 
 
@@ -12,7 +12,10 @@ define(["js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"],
 	////////////////////////////////////////
 
 	controller.init = function(data) {
+        // Check if gauge exists
+        if (data.gauge == undefined) data.gauge = { 'x' : 40, 'y' : 40 };
 		// Create pattern
+        pattern.set_pattern_size(data.gauge)
 		pattern.create_pattern(data.pattern, data.colors);
 		pattern.set("save.name", data.name);
 		pattern.set("name", data.name);
