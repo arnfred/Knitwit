@@ -58,7 +58,8 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 	var collect_params = function() {
 		return {
 			colors : JSON.stringify(colors.get("colors")),
-			stitches : JSON.stringify(colors.get("size")),
+			width : JSON.stringify(colors.get("size.width")),
+            gauge : JSON.stringify(colors.get("size.gauge")),
 			crop : JSON.stringify(upload.get("preview.crop")),
 			image : upload.get("preview.src")
 		}

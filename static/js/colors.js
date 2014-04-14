@@ -24,8 +24,10 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 			}],
 			size : {
 				width : 60,
-				height : 60,
-				ratio : 1,
+                gauge : {
+                    x : 40,
+                    y : 40
+                }
 			},
 			generate : {
 				src : "/static/images/generate.png"
@@ -67,7 +69,7 @@ define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ract
 			var canvas = set_canvas_image(canvas_id, image_data().crop, image);
 
 			// Make pattern size fields update
-			set_size_listeners(canvas.width / canvas.height);
+			//set_size_listeners(canvas.width / canvas.height);
 
 			// Fade in color picker
 			$("#colors").fadeIn();

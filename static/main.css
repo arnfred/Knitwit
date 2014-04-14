@@ -139,11 +139,20 @@ form#size-form {
 form#size-form label {
 	width: 50%;
 	font-weight:normal;
+    margin-right:1%;
 }
 
 form#size-form input {
 	display:inline;
-	width:35%;
+	width:20%;
+}
+form#size-form p {
+    text-align:left;
+    width:100%;
+}
+}
+input#pattern-width {
+    width:45%
 }
 div#pattern-size {
 	text-align:center;
