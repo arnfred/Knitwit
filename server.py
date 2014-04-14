@@ -90,11 +90,12 @@ class pattern_json :
     d = web.input(colors = "", image = "", stitches = "", crop = "")
     colors = [ [c["r"], c["g"], c["b"]] for c in json.loads(d.colors) ]
     crop = { str(k):int(v) for (k,v) in json.loads(d.crop).iteritems() }
-    stitches = { str(k):int(v) for (k,v) in json.loads(d.stitches).iteritems() }
+    width = int(json.loads(d.width))
+    gauge = [int(v) for (k,v) in json.loads(d.gauge).iteritems()]
     image = str(d.image)
 
     # Create pattern matrix
-    data = pattern.open_image(image, colors, stitches["height"], crop)
+    data = pattern.open_image(image, colors, width=width, crop=crop, gauge=gauge)
 
     # Runlength encode data and send to client
     encoded_data = pattern.run_length_encode(data)
@@ -109,7 +110,8 @@ class save :
     data = json.dumps({
       "pattern" : json.loads(d.pattern),
       "name" : str(d.name),
-      "colors" : json.loads(d.colors)
+      "colors" : json.loads(d.colors),
+      "gauge" : { str(k):int(v) for (k,v) in json.loads(d.gauge).iteritems() }
     })
 
     # Get random name

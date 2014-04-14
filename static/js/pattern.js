@@ -18,6 +18,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 				b : 20,
 				index : 0
 			}],
+            gauge : false,
 			pattern : [{
 				row : []
 			}],
@@ -64,13 +65,16 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	//                                    //
 	////////////////////////////////////////
 
-	view.init = function(encoded_pattern, colors) {
+	view.init = function(encoded_pattern, colors, gauge) {
 
 		// Decode pattern
 		var pattern = decode(encoded_pattern.data);
 
 		// Create pattern
 		view.create_pattern(pattern, colors);
+
+        // Set pattern size
+        view.set_pattern_size(gauge);
 
 		// Fade in pattern
 		$("#pattern").fadeIn();
@@ -121,6 +125,24 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	}
 
 
+    /*
+     * Set pattern table size
+     */
+    view.set_pattern_size = function(gauge) {
+        // Set gauge in data
+        view.set("gauge", gauge);
+
+        // Find height
+        var width = 11;
+        var height = (gauge.y / gauge.x) * width
+
+        // Set css
+        var width_rule = "width: " + width + "px; min-width: " + width + "px";
+        var height_rule = "height: " + height + "px; min-height: " + height + "px";
+        css.add("td.point", width_rule + "; " + height_rule);
+    }
+
+
 	/*
 	 * Labels are changed to allow for merge
 	 */
@@ -141,6 +163,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			$(e.node).val("")
 		}
 	}
+
 
 
 
@@ -183,6 +206,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		var params = {
 			pattern : JSON.stringify(pattern),
 			name : view.get("save.name"),
+            gauge : JSON.stringify(view.get("gauge")),
 			colors : JSON.stringify(view.get("colors"))
 		};
 
