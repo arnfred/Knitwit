@@ -187,10 +187,6 @@ td.header {
 }
 
 td.point {
-	min-width:11px;
-	min-height:11px;
-	max-width:11px;
-	max-height:11px;
 	border: thin solid #3c3c3c;
 }
 
