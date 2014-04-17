@@ -3,6 +3,7 @@ import math
 from itertools import groupby
 from wand.image import Image
 from PIL import Image as PImage
+import StringIO
 
 
 def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
@@ -18,11 +19,8 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
             image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
             # Resize to width and height ratio
             resize(image, width, height_ratio)
-            # Save as ppm
-            image.format = 'ppm'
-            # Get numpy array with image data
-            image.save(filename="tmp.ppm")
-            data = get_data(PImage.open("tmp.ppm"))
+            # Get data
+            data = get_data(PImage.open(StringIO.StringIO(image.make_blob('ppm'))))
             # Posterize image to fewer colors
     return posterize(data, colors)
 
