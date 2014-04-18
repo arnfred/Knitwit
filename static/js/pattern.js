@@ -139,6 +139,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
         // Get set unit width
         var ratio = (gauge.x / gauge.y);
         var page_width = Math.ceil($(".col-md-6").width() * 3 / 2);
+        if (page_width == 0) page_width = $(".col-md-9").width();
         console.debug(page_width);
         var t = "px";
         var min_width = 11;
