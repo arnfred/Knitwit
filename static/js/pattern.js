@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "lib/Ractive.min", "lib/color/spectrum", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "ractive", "lib/color/spectrum", "ractive_tap", "lib/Ractive-transitions-fade"],
 	function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////

@@ -55,8 +55,10 @@
             paths: { 
             lib: '/static/lib/',
             js: '/static/js/',
-            templates : '/static/templates/'
-            } 
+            templates : '/static/templates/',
+            ractive : "/static/lib/ractive-legacy.min",
+            ractive_tap : "/static/lib/ractive-events-tap.min"
+            }
         },
         ["js/controller", "domReady!"],
         function(controller) {

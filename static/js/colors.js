@@ -1,4 +1,4 @@
-define(["lib/jquery", "text!templates/colors.html", "lib/Ractive.min", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade"],
+define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "lib/Ractive-transitions-fade"],
 	function($, color_template, R) {
 
 

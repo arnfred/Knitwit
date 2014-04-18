@@ -1,4 +1,4 @@
-define(["js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"],
+define(["js/pattern", "ractive", "ractive_tap"],
 	function (pattern, R) {
 
 

@@ -1,4 +1,5 @@
-define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.min", "lib/Ractive-events-tap", "lib/Ractive-transitions-fade", "lib/jcrop/jcrop"],
+//define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ractive_tap", "lib/Ractive-transitions-fade", "lib/jcrop/jcrop"],
+define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ractive_tap", "lib/Ractive-transitions-fade", "lib/jcrop/jcrop"],
 	function($, capture, upload_template, R) {
 
 
@@ -69,8 +70,8 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 			contentType: false,
 			processData: false,
 			type: 'POST',
-			success: function(response){ 
-				show_preview($.parseJSON(response).path); 
+			success: function(response){
+				show_preview($.parseJSON(response).path);
 			}
 		});
 	}
@@ -107,7 +108,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 	}
 
 
-	// The crop coordinates match the canvas, but if the image is scaled 
+	// The crop coordinates match the canvas, but if the image is scaled
 	// we need to rescale. This function takes care of that
 	var set_crop = function(crop_data, image) {
 		// For an image bigger than the container, ratio < 1
@@ -117,7 +118,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 			h : Math.round(crop_data.h * ratio),
 			x : Math.round(crop_data.x * ratio),
 			y : Math.round(crop_data.y * ratio)
-		}); 
+		});
 	}
 
 
@@ -176,6 +177,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "lib/Ractive.m
 
 	view.events();
 	return view;
-	
+
 
 });

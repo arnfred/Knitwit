@@ -37,7 +37,9 @@ $def with(name, page_id)
 	      lib: '/static/lib/',
 	      js: '/static/js/',
 	      templates : '/static/templates/',
-	      pages : '/static/data/pages'
+	      pages : '/static/data/pages',
+          ractive : "/static/lib/ractive-legacy.runtime.min",
+          ractive_tap : "/static/lib/ractive-events-tap.min"
 	    } 
 	  },
 	  ["js/page", "text!pages/$(page_id).json", "domReady!"],
