@@ -15,7 +15,8 @@ define(["js/pattern", "ractive", "ractive_tap"],
         // Check if gauge exists
         if (data.gauge == undefined) data.gauge = { 'x' : 40, 'y' : 40 };
 		// Create pattern
-        pattern.set_pattern_size(data.gauge)
+        var width = data.pattern[0].row.length;
+        pattern.set_pattern_size(width, data.gauge)
 		pattern.create_pattern(data.pattern, data.colors);
 		pattern.set("save.name", data.name);
 		pattern.set("name", data.name);

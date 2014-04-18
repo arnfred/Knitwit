@@ -25,12 +25,13 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 		// Colors -> Pattern
 		// Generate pattern when we click
 		colors.on("generate-pattern", function() {
-			// Collect data
-			var params = collect_params();
-
 			// Get colors
 			var pattern_colors = colors.get("colors").slice(0);
             var gauge = colors.get("size.gauge");
+			var width = colors.get("size.width");
+
+			// Collect data
+			var params = collect_params();
 
 			// Replace PNG with gif of spinning gear
 			var image = new Image();
@@ -41,8 +42,8 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			image.src = path;
 
 			// Send JSON
-			$.getJSON("/pattern.json", params, function(encoded_pattern) {
-				pattern.init(encoded_pattern, pattern_colors, gauge);
+			$.getJSON("/pattern.json", params, function(data) {
+				pattern.init(data.data, pattern_colors, gauge, width);
 				colors.set('generate.src', "/static/images/generate.png");
 			});
 		});

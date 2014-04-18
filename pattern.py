@@ -8,7 +8,7 @@ import StringIO
 
 def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
     # Find height ratio
-    height_ratio = gauge[0] / float(gauge[1])
+    height_ratio = gauge[1] / float(gauge[0])
 
     # Open image, resize and posterize
     with open(path) as fp :
@@ -54,6 +54,11 @@ def posterize(data, colors) :
     # Find the shortest norm to find the closest color
     return numpy.argmin(distances, axis=0)
 
+
+def tolist(data) :
+    def make_row(row) :
+        return { 'row' : row.tolist() }
+    return map(make_row, data)
 
 def run_length_encode(data) :
     def encode_row(row) :

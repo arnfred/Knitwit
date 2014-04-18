@@ -2,13 +2,10 @@ import web
 import json
 import random, string
 import os
-import json
 import numpy
 import re
 import pattern
-from StringIO import StringIO
 from binascii import a2b_base64
-import itertools
 from wand.image import Image
 
 
@@ -98,8 +95,7 @@ class pattern_json :
     data = pattern.open_image(image, colors, width=width, crop=crop, gauge=gauge)
 
     # Runlength encode data and send to client
-    encoded_data = pattern.run_length_encode(data)
-    return json.dumps({ 'data' : encoded_data })
+    return json.dumps({ 'data' : pattern.tolist(data) })
 
 
 class save :

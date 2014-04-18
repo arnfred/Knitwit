@@ -1,5 +1,4 @@
-//define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ractive_tap", "lib/Ractive-transitions-fade", "lib/jcrop/jcrop"],
-define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ractive_tap", "lib/Ractive-transitions-fade", "lib/jcrop/jcrop"],
+define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ractive_tap", "ractive_fade", "lib/jcrop/jcrop"],
 	function($, capture, upload_template, R) {
 
 

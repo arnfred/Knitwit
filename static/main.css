@@ -32,7 +32,7 @@
 	margin: 3em 5%;
 }
 button {
-	-webkit-appearance: none;
+	/*-webkit-appearance: none;*/
 }
 
 /*
@@ -53,12 +53,13 @@ button {
     font-size:8em;
     font-weight:bold;
     margin:0;
+    margin-left:-0.07em;
     line-height:1;
     padding:0;
 }
 
 #title h3 {
-    margin:0 0 1em 0;
+    margin:0 0 1em -0.05em;
 }
 
 #example img {
@@ -176,7 +177,7 @@ div#pattern-size {
  * Table containing Pattern
  */
 th, td.header {
-	font-size: 5pt;
+	/*font-size: 5pt;*/
 	text-align:center;
 	font-weight:normal;
 	border: thin solid #3c3c3c;
@@ -188,6 +189,9 @@ td.header {
 
 td.point {
 	border: thin solid #3c3c3c;
+    text-align:center;
+    font-weight:bold;
+    color: black;
 }
 
 
@@ -195,11 +199,23 @@ td.point {
  * Color Row
  */
 
+button#symbols {
+    float: left;
+    height: 5.1em;
+    width: 5em;
+    margin-right: 1%;
+}
+
+#symbols img {
+    width:100%;
+}
+
 p.select {
 	margin:0;
 	width:100%;
 	text-align:center;
 	background-color:#fff;
+    height:2em;
 	padding:0.2em;
 	border-top:thin solid #c3c3c3;
 	cursor: pointer;
