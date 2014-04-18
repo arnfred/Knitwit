@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", "lib/Ractive.min", "lib/Ractive-events-tap"],
+define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", "ractive", "ractive_tap"],
 	function ($, _, upload, colors, pattern, R) {
 
 

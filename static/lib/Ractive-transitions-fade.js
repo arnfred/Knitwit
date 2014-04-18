@@ -57,7 +57,7 @@
 
 	// AMD?
 	else if ( typeof define === 'function' && define.amd ) {
-		define([ 'lib/Ractive.min' ], factory );
+		define([ 'ractive' ], factory );
 	}
 
 	// browser global
