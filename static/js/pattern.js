@@ -1,4 +1,4 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "ractive", "lib/color/spectrum", "ractive_tap", "lib/Ractive-transitions-fade"],
+define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "ractive", "lib/color/spectrum", "ractive_tap", "ractive_fade"],
 	function($, _, css, pattern_template, R) {
 
 	////////////////////////////////////////
@@ -27,7 +27,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			save : {
 				name : "My Pattern",
 			},
-			saved : false
+			saved : false,
+            font : {
+                size : 6
+            },
+            show_symbols : false
 		}
 	});
 
@@ -41,6 +45,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	view.events = function() {
 		// Correct color when user clicks on pattern
 		view.on("correct-color", correct_color);
+
+        // Change to symbols when click on symbols button
+        view.on("symbols-toggle", symbols_toggle);
 
 		// Set color with color picker
 		$("#pattern-colors li div").each(add_color_picker);
@@ -65,16 +72,13 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	//                                    //
 	////////////////////////////////////////
 
-	view.init = function(encoded_pattern, colors, gauge) {
-
-		// Decode pattern
-		var pattern = decode(encoded_pattern.data);
+	view.init = function(pattern, colors, gauge, width) {
 
 		// Create pattern
 		view.create_pattern(pattern, colors);
 
         // Set pattern size
-        view.set_pattern_size(gauge);
+        view.set_pattern_size(width, gauge);
 
 		// Fade in pattern
 		$("#pattern").fadeIn();
@@ -128,29 +132,67 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
     /*
      * Set pattern table size
      */
-    view.set_pattern_size = function(gauge) {
+    view.set_pattern_size = function(pattern_width, gauge) {
         // Set gauge in data
         view.set("gauge", gauge);
 
-        // Get ratio
-        var ratio = (gauge.y / gauge.x);
+        // Get set unit width
+        var ratio = (gauge.x / gauge.y);
+        var page_width = Math.ceil($(".col-md-6").width() * 3 / 2);
+        console.debug(page_width);
+        var t = "px";
+        var min_width = 11;
+        var unit = 1.0 / (pattern_width + 1) * page_width;
+
+        // Test if unit is smaller than a certain size
+        if (unit < min_width) {
+            unit = min_width;
+        }
 
         if (ratio > 1) {
             // Find height
-            var width = 11;
-            var height = (gauge.y / gauge.x) * width;
+            var width = unit;
+            var height = (gauge.x / gauge.y) * width;
         } else {
             // Find height
-            var height = 11;
-            var width = (gauge.x / gauge.y) * height;
+            var height = unit;
+            var width = (gauge.y / gauge.x) * height;
         }
 
-        console.debug("height: " + height + ", width: " + width);
-
         // Set css
-        var width_rule = "width: " + width + "px; min-width: " + width + "px; max-width: " + width + "px";
-        var height_rule = "height: " + height + "px; min-height: " + height + "px; max-width: " + width + "px";
+        var width_rule = "width: " + width + t + "; min-width: " + width + t + "; max-width: " + width + t + ";";
+        var height_rule = "height: " + height + t + "; min-height: " + height + t + "; max-width: " + width + t + ";";
         css.add("td.point", width_rule + "; " + height_rule);
+        view.set("font.size",width - 5)
+    }
+
+
+    /*
+     * Change pattern to symbols
+     */
+    var toggle_symbols = function() {
+        var symbols = ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"];
+        var brighten = function(c) {
+            return parseInt((c + 3*255.0) / 4.0);
+        };
+		// Add rules
+		_(view.get("colors")).each(function (color, i) {
+			var rgb = "rgb(" + brighten(color.r) + "," + brighten(color.g) + "," + brighten(color.b) + ")";
+            $("td.color" + color.index).html(symbols[i]);
+			css.change("td.color" + color.index, "background-color: " + rgb);
+		});
+    }
+
+    /*
+     * Change pattern to colors
+     */
+    var toggle_colors = function() {
+		// Add rules
+		_(view.get("colors")).each(function (color, i) {
+			var rgb = "rgb(" + (color.r) + "," + (color.g) + "," + (color.b) + ")";
+            $("td.color" + color.index).html("");
+			css.change("td.color" + color.index, "background-color: " + rgb);
+		});
     }
 
 
@@ -258,6 +300,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		});
 		view.update("pattern");
 
+        // If symbols are shown, update those
+        if (view.get("show_symbols")) {
+            toggle_symbols();
+        }
+
 		// Remove last Events
 		reset_merge();
 	}
@@ -345,7 +392,13 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		}
 
 		var update_table = function(color, i) {
-			css.change("td.color" + i, "background-color: " + color.toHexString());
+            if (view.get("show_symbols")) {
+                toggle_symbols();
+            }
+            else {
+                toggle_colors();
+            }
+			//css.change("td.color" + i, "background-color: " + color.toHexString());
 		}
 
 		var bg = $(elem).css("background-color");
@@ -358,6 +411,21 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			hide: set_color
 		});
 	}
+
+
+    /*
+     * Toggle the symbols on and off
+     */
+    var symbols_toggle = function() {
+        if (view.get("show_symbols")) {
+            toggle_colors();
+            view.set("show_symbols", false);
+        }
+        else {
+            toggle_symbols();
+            view.set("show_symbols", true);
+        }
+    }
 
 
 	////////////////////////////////////////

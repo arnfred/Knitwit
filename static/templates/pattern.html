@@ -33,8 +33,11 @@
 
 
 	<!-- Row of colors -->
-	<div class="col-md-6">
+	<div class="col-md-9" id="pattern-box">
 		<ul class="colors" id="pattern-colors">
+            <button id="symbols" on-click="symbols-toggle">
+                <img class="button-img" src="/static/images/{{ show_symbols ? 'colors' : 'symbols' }}.png">
+            </button>
 			{{ #colors }}
 			<li>
 				<div class="color" style="background-color:rgb({{r}},{{g}},{{b}})"></div>
@@ -43,7 +46,7 @@
 			{{ /colors }}
 		</ul>
 
-		<table class="clear">
+        <table class="clear" style="font-size:{{ font.size }}px">
 			<!-- Table headers -->
 			<tr>
 				<th></th>
