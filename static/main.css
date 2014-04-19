@@ -96,6 +96,7 @@ div#upload {
 
 img.button-img {
     padding: 0.5em;
+    width: 75%;
 }
 #capture-image img {
     width : 65%;
