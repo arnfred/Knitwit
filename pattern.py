@@ -62,7 +62,7 @@ def color_to_lab(c) :
 
 
 #According to CIE76 but with a scale for luminance
-def color_distance(data_lab, color, luminance_factor = 1) :
+def color_distance(data_lab, color, luminance_factor = 0.8) :
     # Produce image uniformly colored with color converted to Lab color space
     color_lab = color_to_lab(color)
     color_lab_canvas = numpy.zeros(data_lab.shape)
