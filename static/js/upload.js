@@ -77,6 +77,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			processData: false,
 			type: 'POST',
 			success: function(response){
+                progress(0);
 				show_preview($.parseJSON(response).path);
 			}
 		});
