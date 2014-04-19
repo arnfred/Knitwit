@@ -60,7 +60,9 @@
 			<tr>
 				<td class="header">{{ (row_index + 1) % 100 }}</td>
 				{{ #row }}
-				<td class="point color{{ this }}" on-click="correct-color"></td>
+				<td class="point color{{ this }}" on-click="correct-color">
+                    {{ show_symbols ? symbols[this] : "" }}
+                </td>
 				{{ /row }}
 			</tr>
 			{{ /pattern }}

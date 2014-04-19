@@ -4,6 +4,7 @@ from itertools import groupby
 from wand.image import Image
 from PIL import Image as PImage
 import StringIO
+import colorconv
 
 
 def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
@@ -47,12 +48,34 @@ def get_data(image) :
 
 
 def posterize(data, colors) :
-    # Subtract each color from the data to get a list of matrices each containing vectors
-    data_minus_colors = [data - c for c in colors]
+    # convert data to Lab color space
+    data_lab = colorconv.rgb2lab(data)
     # Now take the norm of each vector in each matrix
-    distances = [numpy.sum(d**2,axis=-1) for d in data_minus_colors]
+    distances = [color_distance(data_lab, c) for c in colors]
     # Find the shortest norm to find the closest color
     return numpy.argmin(distances, axis=0)
+
+
+def color_to_lab(c) :
+    l = colorconv.rgb2lab(numpy.reshape(numpy.array(c, dtype=numpy.uint8),(1,1,3)))
+    return numpy.reshape(l,(3))
+
+
+#According to CIE76 but with a scale for luminance
+def color_distance(data_lab, color, luminance_factor = 1) :
+    # Produce image uniformly colored with color converted to Lab color space
+    color_lab = color_to_lab(color)
+    color_lab_canvas = numpy.zeros(data_lab.shape)
+    color_lab_canvas[:] = color_lab
+
+    # Subtract the two images
+    data_diff = data_lab - color_lab_canvas
+
+    # Add luminance scale
+    data_diff[:,:,0] = data_diff[:,:,0] * luminance_factor
+
+    # Find distance for each pixel and return
+    return numpy.sum(data_diff**2,axis=-1)
 
 
 def tolist(data) :
