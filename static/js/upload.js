@@ -42,6 +42,18 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 		// For capturing image with webcam
 		view.on("capture-image", capture_image);
+
+        // Make sure we delete the image before leaving the page
+        $(window).on('beforeunload', function (e) {
+            $.ajax({
+                url: "/bye/",
+                data : {
+                    name : view.get("file_name")
+                },
+                type: "GET",
+                async: false
+            });
+        });
 	}
 
 

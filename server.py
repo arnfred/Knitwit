@@ -16,7 +16,8 @@ urls = (
   '/upload/', 'upload',
   '/photo/', 'photo',
   '/pattern.json', 'pattern_json',
-  '/p/(.+)', 'page'
+  '/p/(.+)', 'page',
+  '/bye/(.+)', 'cleanup'
 )
 
 # Define template
@@ -119,6 +120,15 @@ class save :
       fp.write(data)
 
     return json.dumps({ "id" : page_id });
+
+
+class cleanup :
+    def GET(self, file_name) :
+        # Check if file name exists
+        path = "static/data/uploads/%s" % file_name
+        if os.path.isfile(path) :
+            # Remove file
+            os.remove(path)
 
 
 class page :
