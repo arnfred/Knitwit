@@ -34,10 +34,10 @@
 
 	<!-- Row of colors -->
 	<div class="col-md-9" id="pattern-box">
+        <button id="symbols" on-click="symbols-toggle">
+            <img class="button-img" src="/static/images/{{ show_symbols ? 'colors' : 'symbols' }}.png">
+        </button>
 		<ul class="colors" id="pattern-colors">
-            <button id="symbols" on-click="symbols-toggle">
-                <img class="button-img" src="/static/images/{{ show_symbols ? 'colors' : 'symbols' }}.png">
-            </button>
 			{{ #colors }}
 			<li>
 				<div class="color" style="background-color:rgb({{r}},{{g}},{{b}})"></div>

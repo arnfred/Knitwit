@@ -139,15 +139,20 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
         // Get set unit width
         var ratio = (gauge.x / gauge.y);
-        var page_width = Math.ceil($(".col-md-6").width() * 3 / 2);
-        if (page_width == 0) page_width = $(".col-md-9").width();
+        var page_width = $(".col-md-9").width();
+        if (page_width <= 100) var page_width = Math.floor($(".col-md-6").width() * 3 / 2);
         var t = "px";
         var min_width = 11;
-        var unit = 1.0 / (pattern_width + 1) * page_width;
+        var max_width = 33;
+        var unit = (1.0 / (pattern_width + 2)) * (page_width);
+        console.debug(unit)
 
         // Test if unit is smaller than a certain size
         if (unit < min_width) {
             unit = min_width;
+        }
+        else if (unit > max_width) {
+            unit = max_width;
         }
 
         if (ratio > 1) {
@@ -164,7 +169,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
         var width_rule = "width: " + width + t + "; min-width: " + width + t + "; max-width: " + width + t + ";";
         var height_rule = "height: " + height + t + "; min-height: " + height + t + "; max-width: " + width + t + ";";
         css.add("td.point", width_rule + "; " + height_rule);
-        view.set("font.size",width - 5)
+        view.set("font.size",width * (6/11))
     }
 
 
