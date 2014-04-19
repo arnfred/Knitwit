@@ -65,10 +65,14 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 		var data = new FormData();
 		data.append('image', new_value[0]);
 
+        // Set listener for progress
+        var xhr_provider = init_progress();
+
 		$.ajax({
 			url: '/upload/',
 			data: data,
 			cache: false,
+            xhr : xhr_provider,
 			contentType: false,
 			processData: false,
 			type: 'POST',
@@ -80,7 +84,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 
     view.cleanUp = function() {
-        console.debug(view.get("preview.src"));
         var file = _(view.get("preview.src").split("/")).last();
         $.ajax({
             url: "/bye/" + file,
@@ -167,7 +170,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 
 	// Uploads data url
-	function upload_capture(data_url) {
+	var upload_capture = function(data_url) {
 		$.post('/photo/',{
 			img : data_url
 		},
@@ -180,6 +183,35 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			show_preview(image_data.path);
 		});
 	}
+
+    // Initialize progress
+    var init_progress = function() {
+        xhr = $.ajaxSettings.xhr();
+        if (xhr.upload) {
+            xhr.upload.addEventListener('progress', update_progress, false);
+        }
+        return function() { return xhr; };
+    }
+
+
+    // Calculates how much of a file we've loaded and updates the progress
+    var update_progress = function(e) {
+        if (e.lengthComputable) {
+            var percentLoaded = (e.loaded / e.total) * 100;
+            progress(percentLoaded);
+        }
+    }
+
+
+    /*
+     * Progress bar for uploads
+     */
+    var progress = function(n) {
+        var b = 0.06;
+        var t = 0.56;
+        var p = n*(t - b) + b*100;
+        $("#upload-image img").css("background-size","50% " + p + "%");
+    }
 
 
 	////////////////////////////////////////
