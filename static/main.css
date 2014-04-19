@@ -95,7 +95,18 @@ div#upload {
 
 
 img.button-img {
-	width: 75%;
+    padding: 0.5em;
+}
+#capture-image img {
+    width : 65%;
+}
+#upload-image img {
+    width : 75%;
+    background-image: url(/static/images/fill.png);
+    background-repeat: no-repeat;
+    background-position: center 100%;
+    background-clip: content-box;
+    background-size: 40% 0%;
 }
 
 img#preview-image {
