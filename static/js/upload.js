@@ -44,16 +44,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 		view.on("capture-image", capture_image);
 
         // Make sure we delete the image before leaving the page
-        $(window).on('beforeunload', function (e) {
-            $.ajax({
-                url: "/bye/",
-                data : {
-                    name : view.get("file_name")
-                },
-                type: "GET",
-                async: false
-            });
-        });
+        $(window).on('beforeunload', view.cleanUp);
 	}
 
 
@@ -86,6 +77,17 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			}
 		});
 	}
+
+
+    view.cleanUp = function() {
+        console.debug(view.get("preview.src"));
+        var file = _(view.get("preview.src").split("/")).last();
+        $.ajax({
+            url: "/bye/" + file,
+            type: "GET",
+            async: false
+        });
+    }
 
 
 	// Shows the preview of the uploaded image and allows user to crop it
