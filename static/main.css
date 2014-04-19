@@ -76,7 +76,6 @@ img#arrow {
  * Footer
  */
 #footer p {
-    float:right;
     font-style:italic;
     margin:1em 0;
 }
@@ -190,8 +189,10 @@ td.header {
 td.point {
 	border: thin solid #3c3c3c;
     text-align:center;
+    vertical-align:middle;
     font-weight:bold;
     color: black;
+    cursor:pointer;
 }
 
 

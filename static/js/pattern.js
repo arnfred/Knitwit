@@ -31,7 +31,8 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
             font : {
                 size : 6
             },
-            show_symbols : false
+            show_symbols : false,
+            symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"]
 		}
 	});
 
@@ -171,17 +172,21 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
      * Change pattern to symbols
      */
     var toggle_symbols = function() {
-        var symbols = ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"];
-        var brighten = function(c) {
-            return parseInt((c + 3*255.0) / 4.0);
-        };
+        var symbols = view.get("symbols");
 		// Add rules
 		_(view.get("colors")).each(function (color, i) {
 			var rgb = "rgb(" + brighten(color.r) + "," + brighten(color.g) + "," + brighten(color.b) + ")";
-            $("td.color" + color.index).html(symbols[i]);
+            //$("td.color" + color.index).html(symbols[i]);
 			css.change("td.color" + color.index, "background-color: " + rgb);
 		});
     }
+
+    /*
+     * Take color and brighten it
+     */
+    var brighten = function(c) {
+        return parseInt((c + 3*255.0) / 4.0);
+    };
 
     /*
      * Change pattern to colors
@@ -190,7 +195,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		// Add rules
 		_(view.get("colors")).each(function (color, i) {
 			var rgb = "rgb(" + (color.r) + "," + (color.g) + "," + (color.b) + ")";
-            $("td.color" + color.index).html("");
 			css.change("td.color" + color.index, "background-color: " + rgb);
 		});
     }
@@ -299,11 +303,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			pattern[index] = { row : new_row }
 		});
 		view.update("pattern");
-
-        // If symbols are shown, update those
-        if (view.get("show_symbols")) {
-            toggle_symbols();
-        }
 
 		// Remove last Events
 		reset_merge();
