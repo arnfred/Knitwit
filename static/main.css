@@ -29,20 +29,17 @@
 }
 
 #page {
-	margin: 3em 5%;
-}
-button {
-	/*-webkit-appearance: none;*/
+	margin: 3em 1em 0 5%;
 }
 
 /*
  * Banner & Title
  */
 #banner {
-	height:245px;
+	height:154px;
 	overflow:hidden;
 	border-bottom:thin solid #c3c3c3;
-	background-image:url("/static/images/banner.png");
+	background-image:url("/static/images/banner-tile.png");
 }
 
 #title {
@@ -76,10 +73,17 @@ img#arrow {
  * Footer
  */
 #footer p {
+    float:right;
     font-style:italic;
-    margin:1em 0;
+    margin:0.5em 2em;
 }
 
+#foot-banner {
+	height:78px;
+	overflow:hidden;
+	border-top:thin solid #c3c3c3;
+	background-image:url("/static/images/banner-tile.png");
+}
 
 /*
  * Upload part of site
@@ -110,8 +114,10 @@ video#video {
  */
 
 ul.colors {
-	margin-top:0.3em;
 	padding-left:0;
+}
+ul#pattern-colors {
+    margin-right:7em;
 }
 ul.colors li {
 	display:block;
@@ -125,6 +131,7 @@ ul.colors div {
 	height:3em;
 	width:100%;
 	border:none;
+    cursor:pointer;
 }
 
 
@@ -201,10 +208,10 @@ td.point {
  */
 
 button#symbols {
-    float: left;
+    float: right;
     height: 5.1em;
     width: 5em;
-    margin-right: 1%;
+    margin-right: 2em;
 }
 
 #symbols img {
