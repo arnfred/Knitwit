@@ -59,7 +59,6 @@ class photo :
     def POST(self):
         # Get post data
         img = web.input()['img']
-        print(img)
 
         # Parse data:image url
         url_pattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
