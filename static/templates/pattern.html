@@ -45,28 +45,13 @@
 			</li>
 			{{ /colors }}
 		</ul>
-
-        <table class="clear" style="font-size:{{ font.size }}px">
-			<!-- Table headers -->
-			<tr>
-				<th></th>
-				{{ #header:index }}
-				<th>{{ (index+1) % 100 }}</th>
-				{{ /header }}
-			</tr>
-
-			<!-- Table body -->
-			{{ #pattern:row_index }}
-			<tr>
-				<td class="header">{{ (row_index + 1) % 100 }}</td>
-				{{ #row }}
-				<td class="point color{{ this }}" on-click="correct-color">
-                    {{ show_symbols ? symbols[this] : "" }}
-                </td>
-				{{ /row }}
-			</tr>
-			{{ /pattern }}
-		</table>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+            style="width:400px; height:300px"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="xMidYMid slice"
+        >
+        <rect x="0" y="0" width="100" height="100" style="fill: blue"/>
+        </svg>
 	</div>
 
 </div>

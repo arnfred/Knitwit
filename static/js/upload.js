@@ -172,7 +172,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 	// Uploads data url
 	var upload_capture = function(data_url) {
-        console.debug(data_url)
 		$.post('/photo/',{
 			img : data_url
 		},
