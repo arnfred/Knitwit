@@ -64,6 +64,11 @@
                 text-anchor="middle"
                 stroke-width="1px"
             >
+            <rect width="{{ (pattern[0].row.length + 1) * width + 1 }}" 
+                  height="{{ (pattern.length + 1) * height + 40 }}" 
+                  x="{{ 0 }}" 
+                  y="{{ 0 }}" 
+                  fill="#ffffff"/>
             {{ #header:index }}
                 <text 
                       dominant-baseline="central"
