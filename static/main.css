@@ -129,12 +129,12 @@ ul.colors {
 	padding-left:0;
 }
 ul#pattern-colors {
-    margin-right:7em;
+    margin-left:5em;
 }
 ul.colors li {
 	display:block;
 	float:left;
-	width:19%;
+	width:18%;
 	border:thin solid #c3c3c3;
 	margin-right:1%;
 	margin-bottom:0.5em;
@@ -192,27 +192,14 @@ div#pattern-size {
 }
 
 /*
- * Table containing Pattern
+ * SVG containing Pattern
  */
-th, td.header {
-	/*font-size: 5pt;*/
-	text-align:center;
-	font-weight:normal;
-	border: thin solid #3c3c3c;
+svg text {
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill:#333;
 }
 
-td.header {
-	padding: 0 0.5em;
-}
-
-td.point {
-	border: thin solid #3c3c3c;
-    text-align:center;
-    vertical-align:middle;
-    font-weight:bold;
-    color: black;
-    cursor:pointer;
-}
 
 
 /*
@@ -220,10 +207,10 @@ td.point {
  */
 
 button#symbols {
-    float: right;
+    float: left;
     height: 5.1em;
     width: 5em;
-    margin-right: 2em;
+    margin-right: 1%;
 }
 
 #symbols img {
@@ -254,7 +241,7 @@ p.select.selected {
 /*
  * Save
  */
-button#save-pattern, input#save-name {
+button#save-pattern, input#save-name, button#download-pattern {
 	width:100%;
 }
 
@@ -263,11 +250,6 @@ img#save {
 	padding:0.5em;
 }
 
-#saved {
-	font-weight:bold;
-	margin-top:10px;
-}
-
-#saved a {
-	text-decoration:underline;
+button#download-pattern {
+    margin-top:2em;
 }

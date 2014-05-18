@@ -1,11 +1,21 @@
-define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html", "ractive", "lib/color/spectrum", "ractive_tap", "ractive_fade"],
-	function($, _, css, pattern_template, R) {
+define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive", "lib/color/spectrum", "ractive_tap", "ractive_fade"],
+	function($, _, pattern_template, R) {
 
 	////////////////////////////////////////
 	//                                    //
 	//            Ractor View             //
 	//                                    //
 	////////////////////////////////////////
+
+    /*
+     * Converts color to rgb string
+     */
+    var toRGB = function(color, show_symbols) {
+        if (show_symbols) {
+            return "rgb(" + brighten(color.r) + "," + brighten(color.g) + "," + brighten(color.b) + ")";
+        }
+        return "rgb(" + color.r + "," + color.g + "," + color.b + ")";
+    }
 
 	var view = new R({
 		template : pattern_template,
@@ -22,6 +32,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			pattern : [{
 				row : []
 			}],
+            pixel_size : 10,
 			header : [],
 			merge : false,
 			save : {
@@ -31,11 +42,13 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
             font : {
                 size : 6
             },
+            rgb : toRGB,
             show_symbols : false,
+            show_pattern : false,
+            show_credits : false,
             symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"]
 		}
 	});
-
 
 	////////////////////////////////////////
 	//                                    //
@@ -65,6 +78,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 		// Save pattern
 		view.on("save-pattern", save_pattern);
+
+		// Save pattern
+		view.on("download-pattern", download);
 	}
 
 	////////////////////////////////////////
@@ -75,11 +91,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 	view.init = function(pattern, colors, gauge, width) {
 
-		// Create pattern
-		view.create_pattern(pattern, colors);
-
         // Set pattern size
         view.set_pattern_size(width, gauge);
+
+		// Create pattern
+		view.create_pattern(pattern, colors);
 
 		// Fade in pattern
 		$("#pattern").fadeIn();
@@ -111,6 +127,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 	 */
 	view.create_pattern = function(pattern, colors) {
 
+		// Set colors
+		view.set_colors(colors);
+
 		// Set header
 		var header = _.range(pattern[0].row.length);
 
@@ -118,14 +137,11 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		view.set("header", header);
 		view.set("pattern", pattern);
 
-		// Add css rules
-		_(colors).each(function (color, index) {
-			var rgb = "rgb(" + color.r + "," + color.g + "," + color.b + ")";
-			css.add("td.color" + index, "background-color: " + rgb);
-		});
+        // Disable symbols
+        view.set("show_symbols", false);
 
-		// Set colors
-		view.set_colors(colors);
+        // Show pattern
+        view.set("show_pattern", true);
 
 	}
 
@@ -164,11 +180,9 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
             var width = (gauge.y / gauge.x) * height;
         }
 
-        // Set css
-        var width_rule = "width: " + width + t + "; min-width: " + width + t + "; max-width: " + width + t + ";";
-        var height_rule = "height: " + height + t + "; min-height: " + height + t + "; max-width: " + width + t + ";";
-        css.add("td.point", width_rule + "; " + height_rule);
-        view.set("font.size",width * (6/11))
+        view.set("width", parseInt(width));
+        view.set("height", parseInt(height));
+        view.set("font.size", width * (6/11))
     }
 
 
@@ -180,8 +194,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		// Add rules
 		_(view.get("colors")).each(function (color, i) {
 			var rgb = "rgb(" + brighten(color.r) + "," + brighten(color.g) + "," + brighten(color.b) + ")";
-            //$("td.color" + color.index).html(symbols[i]);
-			css.change("td.color" + color.index, "background-color: " + rgb);
 		});
     }
 
@@ -199,7 +211,7 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 		// Add rules
 		_(view.get("colors")).each(function (color, i) {
 			var rgb = "rgb(" + (color.r) + "," + (color.g) + "," + (color.b) + ")";
-			css.change("td.color" + color.index, "background-color: " + rgb);
+			//css.change("rect.color" + color.index, "fill: " + rgb);
 		});
     }
 
@@ -376,7 +388,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 
 	var add_color_picker = function(index, elem) {
 
-
 		var set_color = function(color) {
 
 			var indices = _.object(
@@ -394,40 +405,60 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
 			})
 		}
 
-		var update_table = function(color, i) {
-            if (view.get("show_symbols")) {
-                toggle_symbols();
-            }
-            else {
-                toggle_colors();
-            }
-			//css.change("td.color" + i, "background-color: " + color.toHexString());
-		}
-
 		var bg = $(elem).css("background-color");
 
 		$(elem).spectrum({
 			color: bg,
-			change: function(color) { update_table(color, index) },
 			move: set_color,
 			show: set_color,
 			hide: set_color
 		});
 	}
 
-
     /*
      * Toggle the symbols on and off
      */
     var symbols_toggle = function() {
-        if (view.get("show_symbols")) {
-            toggle_colors();
-            view.set("show_symbols", false);
-        }
-        else {
-            toggle_symbols();
-            view.set("show_symbols", true);
-        }
+        view.set("show_symbols", !view.get("show_symbols"));
+    }
+
+
+
+    /*
+     * Download image
+     * Inspired by: http://techslides.com/save-svg-as-an-image/
+     */
+    var download = function() {
+        // Enable credits
+        view.set("show_credits", true)
+        var svg = document.querySelector("svg")
+        var html = document.querySelector("svg").outerHTML
+        var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
+
+        var canvas = document.getElementById("svg-download")
+        canvas.setAttribute('width', svg.getAttribute("width"));
+        canvas.setAttribute('height', svg.getAttribute("height"));
+        context = canvas.getContext("2d");
+
+        var image = new Image();
+        image.onload = function() {
+            context.drawImage(image, 0, 0);
+
+            var canvasdata = canvas.toDataURL("image/png");
+
+            var pngimg = '<img src="'+canvasdata+'">';
+            //d3.select("#pngdataurl").html(pngimg);
+
+            var a = document.createElement("a");
+            var view_name = view.get("name")
+            var name = view_name == "Your Pattern" ? "" : "_" + view_name;
+            var file_name = name.replace(" ","_").toLowerCase();
+            a.download = "knitwit" + file_name + ".png";
+            a.href = canvasdata;
+            a.click();
+        };
+        image.src = imgsrc;
+        view.set("show_credits", false)
     }
 
 
