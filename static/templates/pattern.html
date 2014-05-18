@@ -20,7 +20,13 @@
 		<button on-tap="save-pattern" id="save-pattern">
 			<img src="/static/images/save.png" class="button-img" id="save" 
 			alt="save pattern"/>
-			<p>Save<p>
+			<p>Save Online<p>
+		</button>
+
+		<button on-tap="download-pattern" id="download-pattern">
+			<img src="/static/images/download.png" class="button-img" id="download" 
+			alt="download pattern"/>
+			<p>Download<p>
 		</button>
 		{{ /save }}
 
@@ -34,8 +40,13 @@
 
 	<!-- Row of colors -->
 	<div class="col-md-9" id="pattern-box">
-        <button id="symbols" on-click="symbols-toggle">
-            <img class="button-img" src="/static/images/{{ show_symbols ? 'colors' : 'symbols' }}.png">
+        <button id="symbols" style="margin-left:{{ width-1 }}px" on-click="symbols-toggle">
+            {{ ^show_symbols }}
+            Toggle Symbols
+            {{ /show_symbols }}
+            {{ #show_symbols }}
+            Toggle Colors
+            {{ /show_symbols }}
         </button>
 		<ul class="colors" id="pattern-colors">
 			{{ #colors }}
@@ -45,13 +56,66 @@
 			</li>
 			{{ /colors }}
 		</ul>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-            style="width:400px; height:300px"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="xMidYMid slice"
-        >
-        <rect x="0" y="0" width="100" height="100" style="fill: blue"/>
-        </svg>
+        {{ #show_pattern }}
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+                font-size="{{ font.size }}px"
+                width="{{ (pattern[0].row.length + 1) * width + 1 }}px"
+                height="{{ (pattern.length + 1) * height + 40 }}px"
+                text-anchor="middle"
+                stroke-width="1px"
+            >
+            {{ #header:index }}
+                <text 
+                      dominant-baseline="central"
+                      x="{{ (index+1)*width + parseInt(width / 2.0) }}px" 
+                      y="{{ parseInt(height / 2.0) }}">
+                    {{ (index+1) % 100 }}
+                </text>
+                <text 
+                      dominant-baseline="central"
+                      x="{{ parseInt(width / 2.0) }}px" 
+                      y="{{ (index+1)*height + parseInt(height / 2.0) }}">
+                    {{ (index+1) % 100 }}
+                </text>
+            {{ /header }}
+
+
+            {{ #pattern:row_index }}
+                {{ #row:col_index }}
+                    <rect x="{{ (col_index + 1)*width + 0.5 }}" 
+                          y="{{ (row_index + 1)*height + 0.5 }}" 
+                          width="{{ width }}" 
+                          height="{{ height }}" 
+                          stroke="#333333"
+                          fill="{{ rgb(colors[this], show_symbols) }}"
+                          on-click="correct-color"/>
+                    <text x="{{ (col_index + 1.5)*width + 0.5 }}" 
+                          dominant-baseline="central"
+                          y="{{ (row_index + 1.5)*height + 0.5 }}">
+                        {{ #show_symbols }}
+                           {{ symbols[this] }}
+                        {{ /show_symbols }}
+                    </text>
+                {{ /row }}
+            {{ /pattern }}
+            {{ #show_credits }}
+            <text id="credits" x="{{ width + 1 }}px"
+                  y="{{ (pattern.length + 1) * height + 15 }}px"
+                  text-anchor="initial"
+                  dominant-baseline="central"
+                  font-size="{{ font.size+2 }}px">
+                  Pattern made with Knitwit: http://knitwit.dynkarken.com
+            </text>
+            {{ /show_credits }}
+            </svg>
+        {{ /show_pattern }}
 	</div>
+    <div id="test-svg"></div>
+    <div id="test-png"></div>
+    <!--
+    fill="rgb({{ colors[this].r }},{{ colors[this].g }},{{ colors[this].b }})"
+    -->
+
+    <canvas id="svg-download" class="no-show"></canvas>
 
 </div>
