@@ -145,7 +145,6 @@ define(["lib/jquery", "lib/underscore", "js/css", "text!templates/pattern.html",
         var min_width = 11;
         var max_width = 33;
         var unit = (1.0 / (pattern_width + 2)) * (page_width);
-        console.debug(unit)
 
         // Test if unit is smaller than a certain size
         if (unit < min_width) {
