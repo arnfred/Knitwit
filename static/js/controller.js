@@ -38,14 +38,13 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			var path = "/static/images/generate.gif";
 			image.onload = function(){ // always fires the event.
 				colors.set('generate.src', path)
+                // Send JSON
+                $.getJSON("/pattern.json", params, function(data) {
+                    pattern.init(data.data, pattern_colors, gauge, width);
+                    colors.set('generate.src', "/static/images/generate.png");
+                });
 			};
 			image.src = path;
-
-			// Send JSON
-			$.getJSON("/pattern.json", params, function(data) {
-				pattern.init(data.data, pattern_colors, gauge, width);
-				colors.set('generate.src', "/static/images/generate.png");
-			});
 		});
 	}
 
