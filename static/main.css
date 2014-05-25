@@ -129,7 +129,7 @@ ul.colors {
 	padding-left:0;
 }
 ul#pattern-colors {
-    margin-left:5em;
+    margin-left:7em;
 }
 ul.colors li {
 	display:block;
@@ -198,6 +198,10 @@ svg text {
     dominant-baseline: central;
     text-anchor: middle;
     fill:#333;
+}
+
+svg {
+    shape-rendering:crispEdges;
 }
 
 

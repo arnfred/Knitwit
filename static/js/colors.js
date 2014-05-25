@@ -170,10 +170,11 @@ define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "r
 	// Change existing color
 	var change_color = function(event_data) {
 		var field = $(event_data.node);
+        console.debug(field)
 		var canvas = document.getElementById("color-picker");
 
 		// Add style to field
-		field.css("box-shadow", "0 0 10px #9ecaed");
+		field.parent().css("box-shadow", "0 0 10px #9ecaed");
 
 		// Set color listener
 		var listener = $(canvas).on("mousemove", function(e) {
@@ -191,7 +192,7 @@ define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "r
 			$(canvas).off("mousemove");
 
 			// Set border to normal
-			field.css("box-shadow", "none");
+			field.parent().css("box-shadow", "none");
 
 		});
 	}

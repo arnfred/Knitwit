@@ -76,13 +76,15 @@
                       y="{{ parseInt(height / 2.0) }}">
                     {{ (index+1) % 100 }}
                 </text>
+            {{ /header }}
+            {{ #pattern:index }}
                 <text 
                       dominant-baseline="central"
                       x="{{ parseInt(width / 2.0) }}px" 
                       y="{{ (index+1)*height + parseInt(height / 2.0) }}">
                     {{ (index+1) % 100 }}
                 </text>
-            {{ /header }}
+            {{ /pattern }}
 
 
             {{ #pattern:row_index }}

@@ -156,10 +156,12 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
         // Get set unit width
         var ratio = (gauge.x / gauge.y);
         var page_width = $(".col-md-9").width();
-        if (page_width <= 100) var page_width = Math.floor($(".col-md-6").width() * 3 / 2);
+        if (page_width <= 100) {
+            var page_width = Math.floor($(".col-md-6").width() * 3 / 2);
+        }
         var t = "px";
         var min_width = 11;
-        var max_width = 33;
+        var max_width = 22;
         var unit = (1.0 / (pattern_width + 2)) * (page_width);
 
         // Test if unit is smaller than a certain size
@@ -185,17 +187,6 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
         view.set("font.size", width * (6/11))
     }
 
-
-    /*
-     * Change pattern to symbols
-     */
-    var toggle_symbols = function() {
-        var symbols = view.get("symbols");
-		// Add rules
-		_(view.get("colors")).each(function (color, i) {
-			var rgb = "rgb(" + brighten(color.r) + "," + brighten(color.g) + "," + brighten(color.b) + ")";
-		});
-    }
 
     /*
      * Take color and brighten it
@@ -350,27 +341,6 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 
 		// Remove last Events
 		view.set("merge", false);
-	}
-
-
-	// Take matrix where each row is run-length encoded and decode it
-	var decode = function(data) {
-
-		// runlength decode a row
-		function row_decode(row) {
-			// Using jquery map since it's practically a flatmap
-			return { row : $.map(row, elem_decode) };
-		}
-
-		// Create list containing 'elem[0]' copies of 'elem[1]'
-		function elem_decode(elem) {
-			return (Array.apply(0, Array(elem[0]))).map(function() {
-				return elem[1];
-			});
-		}
-
-		// Decode all data
-		return data.map(row_decode);
 	}
 
 
