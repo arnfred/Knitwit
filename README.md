@@ -1,4 +1,8 @@
-Knitting-Pattern
+Knitwit
 ================
 
-A web app for creating a knitting pattern from an image based on web.py. To use the app, see [pattern.dynkarken.com](http://pattern.dynkarken.com).
+Knitwit is an open-source knitting pattern generator.
+
+To try it out, see [knitwit.dynkarken.com](http://knitwit.dynkarken.com).
+
+You can install by cloning this repository and running ```python server.py```. You will need to have ```web.py```, ```wand```, ```numpy``` and ```Pillow``` (or ```PIL```) installed on your system.
