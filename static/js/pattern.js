@@ -213,7 +213,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 	var init_merge = function(e) {
 
 		// Change all other fields to merge
-		$("p.select").html("Merge").addClass("merge");
+		$("ul#pattern-colors p.select").html("Merge").addClass("merge");
 		$(e.node).html("Deselect").addClass("selected");
 
 		// update view
@@ -293,10 +293,10 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 		if (e.node == view.get("merge").node)
 			return reset_merge();
 
-		// If not, remove last clicked on color
-		var selected_index = get_index(view.get("merge"));
-		var merged_index = get_index(e);
-        var merged_position = get_position(e);
+		// If not, remove first clicked on color
+		var selected_index = get_index(e);
+		var merged_index = get_index(view.get("merge"));
+        var merged_position = get_position(view.get("merge"));
 		var colors = view.get("colors");
 		colors.splice(merged_position, 1);
 
@@ -337,7 +337,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 	var reset_merge = function() {
 
 		// Change all other fields to merge
-		$("p.select").html("Select").removeClass("merge").removeClass("selected");
+		$("ul#pattern-colors p.select").html("Select").removeClass("merge").removeClass("selected");
 
 		// Remove last Events
 		view.set("merge", false);
