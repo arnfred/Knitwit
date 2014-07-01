@@ -46,8 +46,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             show_symbols : false,
             show_pattern : false,
             show_credits : false,
-            symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"],
-            exists : false
+            symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"]
 		}
 	});
 
@@ -62,6 +61,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 		view.on("correct-color", correct_color);
 
         // Change to symbols when click on symbols button
+        view.off("symbols-toggle")
         view.on("symbols-toggle", symbols_toggle);
 
 		// Set color with color picker
@@ -83,8 +83,6 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 		// Save pattern
         view.off("download-pattern")
 		view.on("download-pattern", download);
-
-        view.set("exists", false);
 	}
 
 	////////////////////////////////////////
