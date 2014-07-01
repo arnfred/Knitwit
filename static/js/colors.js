@@ -170,7 +170,6 @@ define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "r
 	// Change existing color
 	var change_color = function(event_data) {
 		var field = $(event_data.node);
-        console.debug(field)
 		var canvas = document.getElementById("color-picker");
 
 		// Add style to field

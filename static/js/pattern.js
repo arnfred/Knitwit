@@ -46,7 +46,8 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             show_symbols : false,
             show_pattern : false,
             show_credits : false,
-            symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"]
+            symbols : ["X", "#", "+", "·", "¬", "@", "?", "$", "V", "§", "Ø", "U", "W", "G", "Y", "D", "Z", "<", ">", "{", "}", "8", "7", "6", "5", "4", "3", "2", "9"],
+            exists : false
 		}
 	});
 
@@ -80,7 +81,10 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 		view.on("save-pattern", save_pattern);
 
 		// Save pattern
+        view.off("download-pattern")
 		view.on("download-pattern", download);
+
+        view.set("exists", false);
 	}
 
 	////////////////////////////////////////
@@ -178,8 +182,9 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             var height = (gauge.x / gauge.y) * width;
         } else {
             // Find height
-            var height = unit;
-            var width = (gauge.y / gauge.x) * height;
+            var width = unit;
+            //var width = (gauge.y / gauge.x) * height;
+            var height = width / (gauge.y / gauge.x);
         }
 
         view.set("width", parseInt(width));
@@ -227,6 +232,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 			$(e.node).val("")
 		}
 	}
+
 
 
 
@@ -398,7 +404,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
      * Download image
      * Inspired by: http://techslides.com/save-svg-as-an-image/
      */
-    var download = function() {
+    var download = function(e) {
         // Enable credits
         view.set("show_credits", true)
         var svg = document.querySelector("svg")
@@ -411,7 +417,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
         context = canvas.getContext("2d");
 
         var image = new Image();
-        image.onload = function() {
+        image.onload = _.once(function() {
             context.drawImage(image, 0, 0);
 
             var canvasdata = canvas.toDataURL("image/png");
@@ -426,7 +432,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             a.download = "knitwit" + file_name + ".png";
             a.href = canvasdata;
             a.click();
-        };
+        });
         image.src = imgsrc;
         view.set("show_credits", false)
     }
