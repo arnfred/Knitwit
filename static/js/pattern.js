@@ -186,7 +186,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
         }
 
         view.set("width", Math.round(width));
-        view.set("height", Math.round(height) - 1);
+        view.set("height", Math.round(height));
         view.set("font.size", width * (6/11))
     }
 
