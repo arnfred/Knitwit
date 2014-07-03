@@ -28,16 +28,10 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
 
 def resize(image, width, height_ratio) :
     img_width, img_height = image.size
-    height = round((width / float(img_width)) * img_height / height_ratio)
+    height = math.floor((width / float(img_width)) * img_height / height_ratio)
     image.transform(resize="%ix%i!" % (width, height))
     return image
 
-
-def round(n) :
-    if n % 1 > 0.5 :
-        return math.ceil(n)
-    else :
-        return math.floor(n)
 
 
 def get_data(image) :
