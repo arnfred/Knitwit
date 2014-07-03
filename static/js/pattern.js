@@ -185,8 +185,8 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             var height = width / (gauge.y / gauge.x);
         }
 
-        view.set("width", parseInt(width));
-        view.set("height", parseInt(height));
+        view.set("width", Math.round(width));
+        view.set("height", Math.round(height) - 1);
         view.set("font.size", width * (6/11))
     }
 
