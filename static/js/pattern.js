@@ -429,7 +429,14 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             var file_name = name.replace(" ","_").toLowerCase();
             a.download = "knitwit" + file_name + ".png";
             a.href = canvasdata;
-            a.click();
+            a.id = "downloadlink"
+            var clickEvent = new MouseEvent("click", {
+                "view": window,
+                "bubbles": true,
+                "cancelable": false
+            });
+            a.dispatchEvent(clickEvent);
+            //$(a).click();
         });
         image.src = imgsrc;
         view.set("show_credits", false)
