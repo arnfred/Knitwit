@@ -120,6 +120,10 @@ video#video {
 	cursor:pointer;
 }
 
+.jcrop-holder img {
+    background: white;
+}
+
 
 /*
  * Colors

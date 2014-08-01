@@ -78,7 +78,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			type: 'POST',
 			success: function(response){
                 progress(0);
-				show_preview($.parseJSON(response).path);
+				view.show_preview($.parseJSON(response).path);
 			}
 		});
 	}
@@ -95,7 +95,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 
 	// Shows the preview of the uploaded image and allows user to crop it
-	var show_preview = function(path) {
+	view.show_preview = function(path) {
 
 		var image = new Image();
 		image.onload = function(){ // always fires the event.
@@ -181,7 +181,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 			// Get image
 			var image_data = $.parseJSON(data);
-			show_preview(image_data.path);
+			view.show_preview(image_data.path);
 		});
 	}
 
