@@ -85,6 +85,20 @@ define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "r
 	////////////////////////////////////////
 
 
+    // Placeholder to init with
+    view.placeholder = function() {
+        return {
+            "src" : "/static/images/placeholder2.png",
+            "crop" : {
+                        "w" : 384,
+                        "h" : 275,
+                        "x" : 0,
+                        "y" : 0
+                    }
+                }
+    }
+
+
 	// Add listeners to the pattern size input boxes so the ratio is maintained
 	var set_size_listeners = function(size_ratio) {
 		view.set("size.ratio", size_ratio);

@@ -397,7 +397,6 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
     }
 
 
-
     /*
      * Download image
      * Inspired by: http://techslides.com/save-svg-as-an-image/
@@ -429,7 +428,6 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
             var file_name = name.replace(" ","_").toLowerCase();
             a.download = "knitwit" + file_name + ".png";
             a.href = canvasdata;
-            a.id = "downloadlink"
             var clickEvent = new MouseEvent("click", {
                 "view": window,
                 "bubbles": true,

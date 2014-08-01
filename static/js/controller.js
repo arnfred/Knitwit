@@ -4,6 +4,17 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 
 	var controller = {}
 
+	////////////////////////////////////////
+	//                                    //
+	//                Init                //
+	//                                    //
+	////////////////////////////////////////
+
+	controller.init = function() {
+        console.debug(colors.placeholder());
+        colors.init(colors.placeholder);
+        upload.show_preview(colors.placeholder().src)
+    }
 
 	////////////////////////////////////////
 	//                                    //
