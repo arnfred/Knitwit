@@ -99,7 +99,12 @@ img.button-img {
     width: 75%;
 }
 #capture-image img {
-    width : 65%;
+    width : 85%;
+}
+#capture-image input {
+    text-align:center;
+    margin-bottom:0.3em;
+    width:95%;
 }
 #upload-image img {
     width : 75%;

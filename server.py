@@ -5,6 +5,7 @@ import os
 import numpy
 import re
 import pattern
+import urllib
 from binascii import a2b_base64
 from wand.image import Image
 
@@ -14,6 +15,7 @@ urls = (
     '/', 'index',
     '/save/', 'save',
     '/upload/', 'upload',
+    '/web/', 'from_web',
     '/photo/', 'photo',
     '/pattern.json', 'pattern_json',
     '/p/(.+)', 'page',
@@ -34,6 +36,61 @@ class index :
     def GET(self):
         return render.main()
 
+
+class from_web:
+    def POST(self):
+        # Get the post data
+        url = web.input(url='')['url']
+
+        # Check that url exists
+        if url == '':
+            return json.dumps({
+                'status': 'fail',
+                'error': 'No URL specified'
+            });
+
+        # Open url and check that content length isn't ridiculous
+        try:
+            url_obj = urllib.urlopen(url)
+            url_info = url_obj.info()
+        except IOError:
+            return json.dumps({
+                'status': 'fail',
+                'error': '404 - File not found'
+            });
+
+        print(url_info)
+        if int(url_info["Content-Length"]) > 2000000:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'Image must be less than 1 mb'
+            });
+
+        # Check that content is an image
+        try:
+            content = url_info["Content-Type"]
+            print(content.split("image/"))
+            img_type = content.split("image/")[1]
+        except IndexError:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'Not an image file'
+            });
+
+        path = random_file_name("static/data/uploads/", "." + img_type)
+        print(path)
+
+        with Image(file=url_obj) as img :
+            #im_norm = normalize_image(im);
+            img.format = 'jpeg'
+            img.save(filename=path)
+            return json.dumps({
+                'status': 'ok',
+                'path' : path
+            })
+
+
+
 # A regular image is uploaded
 class upload :
     def POST(self):
@@ -44,14 +101,14 @@ class upload :
         path = random_file_name("static/data/uploads/", ".jpg")
 
         # Open path and save file
-        with open(path, 'wb') as saved:
-            im_file = form['image'].file
-            # We open file with PIL to save as jpg
-            with Image(file=im_file) as img :
-                #im_norm = normalize_image(im);
-                img.format = 'jpeg'
-                img.save(filename=path)
-                return json.dumps({ 'path' : path })
+        #with open(path, 'wb') as saved:
+        im_file = form['image'].file
+        # We open file with PIL to save as jpg
+        with Image(file=im_file) as img :
+            #im_norm = normalize_image(im);
+            img.format = 'jpeg'
+            img.save(filename=path)
+            return json.dumps({ 'path' : path })
 
 
 # A form with a png data url is uploaded
@@ -67,7 +124,7 @@ class photo :
         im_file = url_pattern.match(img).group(2)
 
         # Create random image path (10 characters long)
-        path_png = random_file_name("static/data/uploads/", ".png")
+        #path_png = random_file_name("static/data/uploads/", ".png")
         path_jpg = random_file_name("static/data/uploads/", ".jpg")
 
         # Decode the data and create a binary blob
