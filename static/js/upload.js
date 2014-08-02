@@ -13,9 +13,13 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 		el : "upload",
 		data : {
 			upload : {
+                url : undefined,
+                last_url : undefined,
 				show : true,
 				file : undefined,
-				file_name : "Upload File"
+				file_name : "Upload File",
+                web_name : "Use Online Image",
+                show_url_input : false
 			},
 			preview : undefined,
 			capture : undefined
@@ -37,11 +41,20 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			$("#upload-input").click();
 		})
 
+        // For uploading from web
+        view.on("upload-web", from_web);
+
+        $("#upload-web").keyup(function(event) {
+            if (event.keyCode == 13) {
+                from_web();
+            }
+        });
+
 		// Show preview once the image has been uploaded
 		view.observe("upload.file", upload_image)
 
 		// For capturing image with webcam
-		view.on("capture-image", capture_image);
+		view.on("capture-image", from_web);
 
         // Make sure we delete the image before leaving the page
         $(window).on('beforeunload', view.cleanUp);
@@ -54,6 +67,37 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 	//              Functions             //
 	//                                    //
 	////////////////////////////////////////
+
+
+    // Fetches an image from the web
+    var from_web = function() {
+        // Prompt user for url and make sure to append http
+        //url = prompt("Please enter the url of the image:");
+        var url = view.get("upload.url");
+        var last_url = view.get("upload.last_url");
+        if (url == undefined || url == "" || url == last_url) {
+            $("#upload-web").focus();
+            return false;
+        }
+        else if (url.substr(0,4) != "http") {
+            url = "http://" + url;
+        }
+        basename = url.split("/").pop().substr(0,33);
+
+        // Update
+		view.set("upload.web_name", "Fetching ...");
+		view.set("upload.url", url);
+		view.set("upload.last_url", url);
+        $.post("/web/", { 'url': url }, function(response){
+            var data = $.parseJSON(response)
+            if (data.status == "fail") {
+                view.set("upload.web_name", data.error);
+                return;
+            }
+            view.set("upload.web_name", basename);
+            view.show_preview(data.path);
+        });
+    }
 
 
 	// Uploads image to server and receives the url back
@@ -149,41 +193,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 		});
 	}
 
-
-	// Enables the webcam and fades in the controls for it
-	var capture_image = function() {
-
-		// Show video
-		view.set('capture', true);
-
-		// Start video
-		var w = $("#upload-buttons").width();
-		var take_picture = capture("#video", "#canvas", w);
-
-		// when photo is taken, show image and hide video
-		$("#video").on("click", function() {
-			var data_url = take_picture();
-			upload_capture(data_url);
-			$("#video").hide();
-			$("#canvas").show();
-		});
-	}
-
-
-	// Uploads data url
-	var upload_capture = function(data_url) {
-		$.post('/photo/',{
-			img : data_url
-		},
-		function(data) {
-			// Hide capture
-			view.set('capture', false);
-
-			// Get image
-			var image_data = $.parseJSON(data);
-			view.show_preview(image_data.path);
-		});
-	}
 
     // Initialize progress
     var init_progress = function() {

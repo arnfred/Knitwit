@@ -27,6 +27,7 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 		// Upload -> Colors
 		// Make color picker correspond with crop size
 		upload.observe("preview.crop", function(new_val, old_val) {
+            if (new_val == undefined) return
 			var preview_image_fun = function() { return upload.get("preview"); };
 			// Show color picker
 			colors.init(preview_image_fun);
