@@ -76,7 +76,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
         var url = view.get("upload.url");
         var last_url = view.get("upload.last_url");
         if (url == undefined || url == "" || url == last_url) {
-            $("#upload-web").focus();
+            $("#upload-web").focus().select();
             return false;
         }
         else if (url.substr(0,4) != "http") {
