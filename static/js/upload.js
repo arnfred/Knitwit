@@ -83,7 +83,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
         var last_url = view.get("upload.last_url");
         if (url == undefined || url == "" || url == last_url) {
             $("#upload-web").focus().select();
-            view.set("upload.upload_msg", "No Text");
+            view.set("upload.upload_msg", "Paste a URL above to use online image");
             view.set("upload.upload_msg_color", "#882222");
             return false;
         }
