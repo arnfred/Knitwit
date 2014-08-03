@@ -11,9 +11,8 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 	////////////////////////////////////////
 
 	controller.init = function() {
-        console.debug(colors.placeholder());
-        colors.init(colors.placeholder);
-        upload.show_preview(colors.placeholder().src)
+        colors.init(function () { return colors.get("placeholder") });
+        upload.show_preview(colors.get("placeholder.src"))
     }
 
 	////////////////////////////////////////

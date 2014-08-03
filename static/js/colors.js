@@ -12,6 +12,15 @@ define(["lib/jquery", "text!templates/colors.html", "ractive", "ractive_tap", "r
 		template : color_template,
 		el : "colors",
 		data : {
+            placeholder : {
+                src : "static/images/placeholder2.jpg",
+                crop : {
+                    w : 384,
+                    h : 275,
+                    x : 0,
+                    y : 0
+                }
+            },
 			show : false,
 			colors : [{
 				r : 20,

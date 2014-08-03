@@ -18,7 +18,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 				show : true,
 				file : undefined,
 				file_name : "Upload File",
-                web_name : "Use Online Image",
+                web_name : "Upload",
                 show_url_input : false
 			},
 			preview : undefined,
@@ -41,20 +41,14 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			$("#upload-input").click();
 		})
 
-        // For uploading from web
-        view.on("upload-web", from_web);
-
-        $("#upload-web").keyup(function(event) {
-            if (event.keyCode == 13) {
-                from_web();
-            }
-        });
-
 		// Show preview once the image has been uploaded
 		view.observe("upload.file", upload_image)
 
+        // For uploading from web
+        view.on("upload-web-enable", upload_web_enable);
+
 		// For capturing image with webcam
-		view.on("capture-image", from_web);
+		view.on("upload-web", upload_web);
 
         // Make sure we delete the image before leaving the page
         $(window).on('beforeunload', view.cleanUp);
@@ -69,14 +63,28 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 	////////////////////////////////////////
 
 
+    var upload_web_enable = function() {
+        view.set("upload.show_url_input", true);
+        $("#upload-web").keyup(function(event) {
+            if (event.keyCode == 13) {
+                upload_web();
+            }
+        });
+        $("#upload-web").focus();
+    }
+
+
+
     // Fetches an image from the web
-    var from_web = function() {
+    var upload_web = function() {
         // Prompt user for url and make sure to append http
         //url = prompt("Please enter the url of the image:");
         var url = view.get("upload.url");
         var last_url = view.get("upload.last_url");
         if (url == undefined || url == "" || url == last_url) {
             $("#upload-web").focus().select();
+            view.set("upload.upload_msg", "No Text");
+            view.set("upload.upload_msg_color", "#882222");
             return false;
         }
         else if (url.substr(0,4) != "http") {
@@ -85,16 +93,19 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
         basename = url.split("/").pop().substr(0,33);
 
         // Update
-		view.set("upload.web_name", "Fetching ...");
+        view.set("upload.upload_msg", "Fetching ...");
+        view.set("upload.upload_msg_color", "#222222");
 		view.set("upload.url", url);
 		view.set("upload.last_url", url);
         $.post("/web/", { 'url': url }, function(response){
             var data = $.parseJSON(response)
             if (data.status == "fail") {
-                view.set("upload.web_name", data.error);
+                view.set("upload.upload_msg", data.error);
+                view.set("upload.upload_msg_color", "#882222");
                 return;
             }
-            view.set("upload.web_name", basename);
+            view.set("upload.upload_msg", basename);
+            view.set("upload.upload_msg_color", "#222222");
             view.show_preview(data.path);
         });
     }

@@ -100,12 +100,32 @@ img.button-img {
 }
 #capture-image img {
     width : 85%;
+    margin-top:1.2em;
+    margin-bottom:1em;
 }
-#capture-image input {
+div#from-web {
+    margin-top:2em;
+}
+input#upload-web {
+    float:left;
     text-align:center;
     margin-bottom:0.3em;
-    width:95%;
+    width:80%;
+    height:2.5em;
 }
+button#web-button {
+    width:18%;
+    margin-left:2%;
+    height:2.5em;
+}
+button#web-button p {
+    margin-top:5px;
+}
+p#upload-msg {
+    width:80%;
+    text-align:center;
+}
+
 #upload-image img {
     width : 75%;
     background-image: url(/static/images/fill.png);

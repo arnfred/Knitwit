@@ -22,20 +22,30 @@
 			image"/>
 			<p>{{ file_name }}<p>
 		</button>
-		<button on-tap="capture-image" class="half-row" id="capture-image">
+		<button on-tap="upload-web-enable" class="half-row" id="capture-image">
 			<img src="/static/images/link.png"class="button-img"  alt="take 
 			photo"/>
-            <input id="upload-web" type="text" placeholder="Paste Link Here" value="{{ url }}"/>
-            <p>{{ web_name }}</p>
+            <p>Use Online Image</p>
 		</button>
 	</div>
+    {{ #show_url_input }}
+	<div class="col-md-6 col-md-offset-3" id="from-web">
+        <input id="upload-web" type="text" placeholder="Paste Link Here" value="{{ url }}"/>
+        <button on-click="upload-web" id="web-button">
+            <p>{{ web_name }}</p>
+        </button>
+        {{ #upload_msg }}
+        <p style="color:{{ upload_msg_color }}" id="upload-msg">{{ upload_msg }}</p>
+        {{ /upload_msg }}
+    </div>
+    {{ /show_url_input }}
 
 </div>
 {{ /upload }}
 
 
 {{ #capture }}
-<div class="row space" id="capture-row">
+<div class="row less-space" id="capture-row">
 
 	<!-- Preview description -->
 	<div class="col-md-3 description" id="capture-desc">
