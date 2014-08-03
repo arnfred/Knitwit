@@ -22,7 +22,7 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
             resize(image, width, height_ratio)
             # Get data
             data = get_data(PImage.open(StringIO.StringIO(image.make_blob('ppm'))))
-            print("Shape of data: %s" % data.shape)
+            print("Shape of data: (%i, %i)" % data.shape)
             # Posterize image to fewer colors
     return posterize(data, colors)
 
