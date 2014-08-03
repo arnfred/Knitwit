@@ -22,11 +22,13 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
             resize(image, width, height_ratio)
             # Get data
             data = get_data(PImage.open(StringIO.StringIO(image.make_blob('ppm'))))
+            print("Shape of data: %s" % data.shape)
             # Posterize image to fewer colors
     return posterize(data, colors)
 
 
 def resize(image, width, height_ratio) :
+    print("Height ratio: %.2f" % height_ratio)
     img_width, img_height = image.size
     height = math.floor((width / float(img_width)) * img_height / height_ratio)
     image.transform(resize="%ix%i!" % (width, height))
