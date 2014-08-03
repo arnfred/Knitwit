@@ -40,9 +40,11 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 			var pattern_colors = colors.get("colors").slice(0);
             var gauge = colors.get("size.gauge");
 			var width = colors.get("size.width");
+            console.debug(gauge);
 
 			// Collect data
 			var params = collect_params();
+            console.debug(params)
 
 			// Replace PNG with gif of spinning gear
 			var image = new Image();

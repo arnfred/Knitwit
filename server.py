@@ -147,6 +147,8 @@ class pattern_json :
         crop = { str(k):int(v) for (k,v) in json.loads(d.crop).iteritems() }
         width = int(json.loads(d.width))
         gauge = [int(v) for (k,v) in json.loads(d.gauge).iteritems()]
+        print(d.gauge)
+        print(gauge)
         image = str(d.image)
 
         # Create pattern matrix

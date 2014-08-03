@@ -8,6 +8,7 @@ import colorconv
 
 
 def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
+    print("gauge: (%i, %i)" % gauge[:2])
     # Find height ratio
     height_ratio = gauge[1] / float(gauge[0])
 
