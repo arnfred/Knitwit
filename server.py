@@ -146,9 +146,7 @@ class pattern_json :
         colors = [ [c["r"], c["g"], c["b"]] for c in json.loads(d.colors) ]
         crop = { str(k):int(v) for (k,v) in json.loads(d.crop).iteritems() }
         width = int(json.loads(d.width))
-        gauge = [int(json.loads(d.gauge)[k]) for k in ["x", "y"]]
-        print(d.gauge)
-        print(gauge)
+        gauge = [int(json.loads(d.gauge)[k]) for k in ["y", "x"]]
         image = str(d.image)
 
         # Create pattern matrix
