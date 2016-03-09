@@ -8,3 +8,4 @@ To try it out, see [knitwit.dynkarken.com](http://knitwit.dynkarken.com).
 You can install by cloning this repository and running ```python server.py```. You will need to have ```web.py```, ```wand```, ```numpy``` and ```Pillow``` (or ```PIL```) installed on your system.
 
 It's licensed under the MIT license (http://opensource.org/licenses/MIT)
+
