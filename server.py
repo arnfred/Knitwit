@@ -58,6 +58,11 @@ class from_web:
                 'status': 'fail',
                 'error': '404 - File not found'
             });
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while checking image size'
+            });
 
         print(url_info)
         if int(url_info["Content-Length"]) > 2000000:
@@ -76,18 +81,30 @@ class from_web:
                 'status': 'fail',
                 'error': 'Not an image file'
             });
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while checking image type'
+            });
+
 
         path = random_file_name("static/data/uploads/", "." + img_type)
         print(path)
 
-        with Image(file=url_obj) as img :
-            #im_norm = normalize_image(im);
-            img.format = 'jpeg'
-            img.save(filename=path)
+        try:
+            with Image(file=url_obj) as img :
+                #im_norm = normalize_image(im);
+                img.format = 'jpeg'
+                img.save(filename=path)
+                return json.dumps({
+                    'status': 'ok',
+                    'path' : path
+                    })
+        except:
             return json.dumps({
-                'status': 'ok',
-                'path' : path
-            })
+                'status': 'fail',
+                'error': 'unknown error while saving image'
+            });
 
 
 
@@ -104,11 +121,18 @@ class upload :
         #with open(path, 'wb') as saved:
         im_file = form['image'].file
         # We open file with PIL to save as jpg
-        with Image(file=im_file) as img :
-            #im_norm = normalize_image(im);
-            img.format = 'jpeg'
-            img.save(filename=path)
-            return json.dumps({ 'path' : path })
+        try:
+            with Image(file=im_file) as img :
+                #im_norm = normalize_image(im);
+                img.format = 'jpeg'
+                img.save(filename=path)
+                return json.dumps({ 'path' : path })
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while uploading image'
+            });
+
 
 
 # A form with a png data url is uploaded
@@ -123,20 +147,26 @@ class photo :
         # im_file contains image data in 64 encoding
         im_file = url_pattern.match(img).group(2)
 
-        # Create random image path (10 characters long)
-        #path_png = random_file_name("static/data/uploads/", ".png")
-        path_jpg = random_file_name("static/data/uploads/", ".jpg")
+        try:
+            # Create random image path (10 characters long)
+            #path_png = random_file_name("static/data/uploads/", ".png")
+            path_jpg = random_file_name("static/data/uploads/", ".jpg")
 
-        # Decode the data and create a binary blob
-        binary_data = a2b_base64(im_file)
+            # Decode the data and create a binary blob
+            binary_data = a2b_base64(im_file)
 
-        # Write binary data
-        with Image(blob=binary_data) as img :
-            img.format = 'jpeg'
-            img.save(filename=path_jpg)
+            # Write binary data
+            with Image(blob=binary_data) as img :
+                img.format = 'jpeg'
+                img.save(filename=path_jpg)
 
 
-        return json.dumps({ 'path' : path_jpg })
+            return json.dumps({ 'path' : path_jpg })
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while saving data url'
+            });
 
 
 class pattern_json :
@@ -149,11 +179,17 @@ class pattern_json :
         gauge = [int(json.loads(d.gauge)[k]) for k in ["y", "x"]]
         image = str(d.image)
 
-        # Create pattern matrix
-        data = pattern.open_image(image, colors, width=width, crop=crop, gauge=gauge)
+        try:
+            # Create pattern matrix
+            data = pattern.open_image(image, colors, width=width, crop=crop, gauge=gauge)
 
-        # Runlength encode data and send to client
-        return json.dumps({ 'data' : pattern.tolist(data) })
+            # Runlength encode data and send to client
+            return json.dumps({ 'data' : pattern.tolist(data) })
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while loading pattern'
+            });
 
 
 class save :
@@ -172,20 +208,32 @@ class save :
         path = random_file_name("static/data/pages/", ".json")
         page_id = path.split(".")[0].split("/")[-1]
 
-        # Now save file
-        with open(path, 'w') as fp:
-            fp.write(data)
+        try:
+            # Now save file
+            with open(path, 'w') as fp:
+                fp.write(data)
 
-        return json.dumps({ "id" : page_id });
+            return json.dumps({ "id" : page_id });
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while saving pattern'
+            });
 
 
 class cleanup :
     def GET(self, file_name) :
         # Check if file name exists
         path = "static/data/uploads/%s" % file_name
-        if os.path.isfile(path) :
-            # Remove file
-            os.remove(path)
+        try:
+            if os.path.isfile(path) :
+                # Remove file
+                os.remove(path)
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while removing image'
+            });
 
 
 class page :
@@ -198,19 +246,31 @@ class page :
         if not os.path.isfile(path) :
             return render.error("Pattern not found: " + page_id)
 
-        with open(path, 'r') as fp:
-            pattern = json.loads(fp.read())
-            return render.page(pattern['name'], page_id)
+        try:
+            with open(path, 'r') as fp:
+                pattern = json.loads(fp.read())
+                return render.page(pattern['name'], page_id)
+        except:
+            return json.dumps({
+                'status': 'fail',
+                'error': 'unknown error while opening page'
+            });
 
 
 
 def make_thumbnail(path, size = (200, 200)) :
     name, ext = os.path.splitext(path)
-    img = Image.open(path)
-    img.thumbnail(size, Image.ANTIALIAS)
-    thumbnail_path = "%s_thumb%s" % (name, ext)
-    img.save(thumbnail_path, 'JPEG')
-    return thumbnail_path
+    try:
+        img = Image.open(path)
+        img.thumbnail(size, Image.ANTIALIAS)
+        thumbnail_path = "%s_thumb%s" % (name, ext)
+        img.save(thumbnail_path, 'JPEG')
+        return thumbnail_path
+    except:
+        return json.dumps({
+            'status': 'fail',
+            'error': 'unknown error while creating thumbnail'
+        });
 
 
 def normalize(arr):
