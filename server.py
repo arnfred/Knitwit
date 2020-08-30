@@ -127,10 +127,10 @@ class upload :
                 img.format = 'jpeg'
                 img.save(filename=path)
                 return json.dumps({ 'path' : path })
-        except:
+        except Exception as e: 
             return json.dumps({
                 'status': 'fail',
-                'error': 'unknown error while uploading image'
+                'error': str(e)
             });
 
 
