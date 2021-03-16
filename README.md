@@ -16,6 +16,12 @@ To set up dokku for this repository, we need to mount the `patterns` directory t
 dokku storage:mount knitwit /home/arnfred/patterns:/app/static/data/
 ```
 
+For some reason I usually can't seem to see the git repository when the app is first created. To fix this, run:
+
+```
+dokku git:initialize knitwit
+```
+
 Knitwit Errors
 --------------
 

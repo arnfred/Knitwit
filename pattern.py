@@ -3,7 +3,7 @@ import math
 from itertools import groupby
 from wand.image import Image
 from PIL import Image as PImage
-import StringIO
+import io
 import colorconv
 
 
@@ -12,16 +12,14 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
     height_ratio = gauge[1] / float(gauge[0])
 
     # Open image, resize and posterize
-    with open(path) as fp :
-        # Open image
-        image = Image(file=fp)
+    with Image(filename=path) as image:
         # Crop
         if crop != None :
             image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
             # Resize to width and height ratio
             resize(image, width, height_ratio)
             # Get data
-            data = get_data(PImage.open(StringIO.StringIO(image.make_blob('ppm'))))
+            data = get_data(image)
             # Posterize image to fewer colors
     return posterize(data, colors)
 
@@ -34,7 +32,8 @@ def resize(image, width, height_ratio) :
 
 
 
-def get_data(image) :
+def get_data(im) :
+    image = PImage.open(io.BytesIO(im.make_blob('ppm')))
     width, height = image.size
     data_array = numpy.array(image.getdata(), dtype=numpy.uint8)
     depth = len(data_array[0])
@@ -75,9 +74,9 @@ def color_distance(data_lab, color, luminance_factor = 0.8) :
 def tolist(data) :
     def make_row(row) :
         return { 'row' : row.tolist() }
-    return map(make_row, data)
+    return list(map(make_row, data))
 
 def run_length_encode(data) :
     def encode_row(row) :
         return [(len(list(g)), int(k)) for k,g in groupby(row)]
-    return map(encode_row, data)
+    return list(map(encode_row, data))

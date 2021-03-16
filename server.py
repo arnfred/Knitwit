@@ -5,7 +5,7 @@ import os
 import numpy
 import re
 import pattern
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from binascii import a2b_base64
 from wand.image import Image
 
@@ -51,7 +51,7 @@ class from_web:
 
         # Open url and check that content length isn't ridiculous
         try:
-            url_obj = urllib.urlopen(url)
+            url_obj = urllib.request.urlopen(url)
             url_info = url_obj.info()
         except IOError:
             return json.dumps({
@@ -74,7 +74,7 @@ class from_web:
         # Check that content is an image
         try:
             content = url_info["Content-Type"]
-            print(content.split("image/"))
+            print((content.split("image/")))
             img_type = content.split("image/")[1]
         except IndexError:
             return json.dumps({
@@ -174,7 +174,7 @@ class pattern_json :
         # Get web input and parse colors
         d = web.input(colors = "", image = "", stitches = "", crop = "")
         colors = [ [c["r"], c["g"], c["b"]] for c in json.loads(d.colors) ]
-        crop = { str(k):int(v) for (k,v) in json.loads(d.crop).iteritems() }
+        crop = { str(k):int(v) for (k,v) in json.loads(d.crop).items() }
         width = int(json.loads(d.width))
         gauge = [int(json.loads(d.gauge)[k]) for k in ["y", "x"]]
         image = str(d.image)
@@ -201,7 +201,7 @@ class save :
             "pattern" : json.loads(d.pattern),
             "name" : str(d.name),
             "colors" : json.loads(d.colors),
-            "gauge" : { str(k):int(v) for (k,v) in json.loads(d.gauge).iteritems() }
+            "gauge" : { str(k):int(v) for (k,v) in json.loads(d.gauge).items() }
         })
 
         # Get random name
@@ -300,7 +300,7 @@ def random_file_name(dir_path, ending = "", length = 10) :
     is_taken = True
     while is_taken :
         # create image path
-        name = ''.join(random.choice(string.lowercase) for i in range(length))
+        name = ''.join(random.choice(string.ascii_lowercase) for i in range(length))
         path = dir_path + name + ending
         is_taken = os.path.isfile(path)
     return path

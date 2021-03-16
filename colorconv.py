@@ -53,7 +53,7 @@ References
 .. [4] http://en.wikipedia.org/wiki/CIE_1931_color_space
 """
 
-from __future__ import division
+
 
 import numpy as np
 import dtype
@@ -129,10 +129,10 @@ def convert_colorspace(arr, fromspace, tospace):
 
     fromspace = fromspace.upper()
     tospace = tospace.upper()
-    if not fromspace in fromdict.keys():
-        raise ValueError('fromspace needs to be one of %s' % fromdict.keys())
-    if not tospace in todict.keys():
-        raise ValueError('tospace needs to be one of %s' % todict.keys())
+    if not fromspace in list(fromdict.keys()):
+        raise ValueError('fromspace needs to be one of %s' % list(fromdict.keys()))
+    if not tospace in list(todict.keys()):
+        raise ValueError('tospace needs to be one of %s' % list(todict.keys()))
 
     return todict[tospace](fromdict[fromspace](arr))
 
