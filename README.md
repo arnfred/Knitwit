@@ -22,6 +22,18 @@ For some reason I usually can't seem to see the git repository when the app is f
 dokku git:initialize knitwit
 ```
 
+Cron Job:
+---------
+
+To make sure that knitwit keeps working, I've added a root crontab that runs every morning at 05:00 UTC:
+
+```
+sudo crontab -l
+0 5 * * * /usr/bin/dokku ps:restart knitwit
+```
+
+To edit it, use `sudo crontab -e`.
+
 Knitwit Errors
 --------------
 
