@@ -1,5 +1,5 @@
 numpy==1.26.4
 web.py==0.62
 wand==0.6.13
-Pillow==10.2.0
+Pillow==10.3.0
 setuptools==69.2.0
