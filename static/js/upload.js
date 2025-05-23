@@ -37,18 +37,22 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 	view.events = function() {
 
 		// For uploading an image
-		view.on("upload-image", function() {
-			$("#upload-input").click();
+		$('#upload-image').on('click', () => {
+			$('#upload-input').click() // triggers the file input dialog
 		})
 
 		// Show preview once the image has been uploaded
-		view.observe("upload.file", upload_image)
+		// view.observe("upload.file", upload_image)
+		$('#upload-input').on('change', upload_image)
 
         // For uploading from web
-        view.on("upload-web-enable", upload_web_enable);
+        // view.on("upload-web-enable", upload_web_enable);
+		$('#upload-web-enable').on('click', upload_web_enable)
 
 		// For capturing image with webcam
-		view.on("upload-web", upload_web);
+		// view.on("upload-web", upload_web);
+		$('#upload-web').on('click', upload_web)
+
 
         // Make sure we delete the image before leaving the page
         $(window).on('beforeunload', view.cleanUp);
@@ -112,31 +116,35 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 
 	// Uploads image to server and receives the url back
-	var upload_image = function(new_value, old_value) {
+	var upload_image = (new_value) => {
+		const file = new_value.target.files?.[0]
 
-		view.set("upload.file_name", new_value[0].name);
+		if (!file) {
+			return
+		}
 
-		// Now upload image
-		var data = new FormData();
-		data.append('image', new_value[0]);
+		view.set("upload.file_name", file.name)
 
-        // Set listener for progress
-        var xhr_provider = init_progress();
+		var data = new FormData()
+		data.append('image', file)
+
+		var xhr_provider = init_progress()
 
 		$.ajax({
 			url: '/upload/',
 			data: data,
 			cache: false,
-            xhr : xhr_provider,
+			xhr: xhr_provider,
 			contentType: false,
 			processData: false,
 			type: 'POST',
 			success: function(response){
-                progress(0);
+				progress(0);
 				view.show_preview($.parseJSON(response).path);
-			}
-		});
+			},
+		})
 	}
+
 
 
     view.cleanUp = function() {

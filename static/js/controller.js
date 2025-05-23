@@ -35,25 +35,26 @@ define(["lib/jquery", "lib/underscore", "js/upload", "js/colors", "js/pattern", 
 
 		// Colors -> Pattern
 		// Generate pattern when we click
-		colors.on("generate-pattern", function() {
+		$('#generate-pattern').on('click', function () {
 			// Get colors
-			var pattern_colors = colors.get("colors").slice(0);
-            var gauge = colors.get("size.gauge");
-			var width = colors.get("size.width");
+			const pattern_colors = colors.get("colors").slice(0);
+			const gauge = colors.get("size.gauge");
+			const width = colors.get("size.width");
 
 			// Collect data
-			var params = collect_params();
+			const params = collect_params();
 
 			// Replace PNG with gif of spinning gear
-			var image = new Image();
-			var path = "/static/images/generate.gif";
-			image.onload = function(){ // always fires the event.
-				colors.set('generate.src', path)
-                // Send JSON
-                $.getJSON("/pattern.json", params, function(data) {
-                    pattern.init(data.data, pattern_colors, gauge, width);
-                    colors.set('generate.src', "/static/images/generate.png");
-                });
+			const image = new Image();
+			const path = "/static/images/generate.gif";
+
+			image.onload = function () { // always fires the event.
+				colors.set('generate.src', path);
+				// Send JSON
+				$.getJSON("/pattern.json", params, function (data) {
+					pattern.init(data.data, pattern_colors, gauge, width);
+					colors.set('generate.src', "/static/images/generate.png");
+				});
 			};
 			image.src = path;
 		});

@@ -81,8 +81,7 @@ define(["lib/jquery", "lib/underscore", "text!templates/pattern.html", "ractive"
 		view.on("save-pattern", save_pattern);
 
 		// Save pattern
-        view.off("download-pattern")
-		view.on("download-pattern", download);
+		$('#download-pattern').off('click').on('click', download);
 	}
 
 	////////////////////////////////////////
