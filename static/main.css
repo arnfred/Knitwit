@@ -21,6 +21,7 @@
 .half-row {
 	float: left;
 	width:48%;
+	height:18.5rem;
 	margin-right:0 4%;
 }
 .half-row:last-child {
