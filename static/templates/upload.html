@@ -16,11 +16,11 @@
 
 
 	<div class="col-md-6" id="upload-buttons">
-		<label for="upload-input" class="half-row" id="upload-image">
+		<button type="button" class="half-row" id="upload-image" onclick="document.getElementById('upload-input').click()">
             <img src="/static/images/upload-tight.png" class="button-img" alt="upload
 			image"/>
 			<p>{{ file_name }}<p>
-		</label>
+		</button>
 		<button on-tap="upload-web-enable" class="half-row" id="capture-image">
 			<img src="/static/images/link.png"class="button-img"  alt="take 
 			photo"/>

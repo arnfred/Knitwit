@@ -131,12 +131,6 @@ p#upload-msg {
     display: inline-block;
     text-align: center;
     font-weight: normal;
-    appearance: none;
-    background-color: buttonface;
-    border: 2px outset buttonborder;
-    border-radius: 0;
-    padding: 1px 6px;
-    box-sizing: border-box;
 }
 
 #upload-image img {
