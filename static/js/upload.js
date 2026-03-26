@@ -36,11 +36,6 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 	view.events = function() {
 
-		// For uploading an image
-		view.on("upload-image", function() {
-			$("#upload-input").click();
-		})
-
 		// Show preview once a file has been selected
 		$("#upload-input").on("change", function() {
 			if (this.files && this.files.length > 0) {

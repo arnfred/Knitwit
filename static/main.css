@@ -126,6 +126,10 @@ p#upload-msg {
     text-align:center;
 }
 
+#upload-image {
+    cursor: pointer;
+}
+
 #upload-image img {
     width : 75%;
     background-image: url(/static/images/fill.png);
