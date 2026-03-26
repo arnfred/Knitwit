@@ -41,8 +41,12 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			$("#upload-input").click();
 		})
 
-		// Show preview once the image has been uploaded
-		view.observe("upload.file", upload_image)
+		// Show preview once a file has been selected
+		$("#upload-input").on("change", function() {
+			if (this.files && this.files.length > 0) {
+				upload_image(this.files);
+			}
+		})
 
         // For uploading from web
         view.on("upload-web-enable", upload_web_enable);
@@ -112,13 +116,13 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 
 
 	// Uploads image to server and receives the url back
-	var upload_image = function(new_value, old_value) {
+	var upload_image = function(files) {
 
-		view.set("upload.file_name", new_value[0].name);
+		view.set("upload.file_name", files[0].name);
 
 		// Now upload image
 		var data = new FormData();
-		data.append('image', new_value[0]);
+		data.append('image', files[0]);
 
         // Set listener for progress
         var xhr_provider = init_progress();
