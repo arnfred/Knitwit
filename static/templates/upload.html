@@ -21,7 +21,7 @@
 			image"/>
 			<p>{{ file_name }}<p>
 		</button>
-		<button on-tap="upload-web-enable" class="half-row" id="capture-image">
+		<button on-click="upload-web-enable" class="half-row" id="capture-image">
 			<img src="/static/images/link.png"class="button-img"  alt="take 
 			photo"/>
             <p>Use Online Image</p>
@@ -54,7 +54,7 @@
 
 	<!-- Show image preview for cropping -->
 	<div intro="fade" class="col-md-6" id="capture">
-		<video on-tap="take-photo" id="video"></video>
+		<video on-click="take-photo" id="video"></video>
 		<canvas id="canvas" class="hide"></canvas>
 	</div>
 

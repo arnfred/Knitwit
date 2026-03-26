@@ -13,17 +13,17 @@
 		<form id="save-form">
 			<p>
 			<label for="save-name">Save the pattern as:</label>
-			<input on-tap="clear-field" class="save-name form-control" id="save-name" type="text" value="{{ name }}" name="save-name"/>
+			<input on-click="clear-field" class="save-name form-control" id="save-name" type="text" value="{{ name }}" name="save-name"/>
 			</p>
 		</form>
 
-		<button on-tap="save-pattern" id="save-pattern">
+		<button on-click="save-pattern" id="save-pattern">
 			<img src="/static/images/save.png" class="button-img" id="save" 
 			alt="save pattern"/>
 			<p>Save Online<p>
 		</button>
 
-		<button on-tap="download-pattern" id="download-pattern">
+		<button on-click="download-pattern" id="download-pattern">
 			<img src="/static/images/download.png" class="button-img" id="download" 
 			alt="download pattern"/>
 			<p>Download<p>
