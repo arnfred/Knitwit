@@ -97,7 +97,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 		view.set("upload.url", url);
 		view.set("upload.last_url", url);
         $.post("/web/", { 'url': url }, function(response){
-            var data = $.parseJSON(response)
+            var data = response
             if (data.status == "fail") {
                 view.set("upload.upload_msg", data.error);
                 view.set("upload.upload_msg_color", "#882222");
@@ -132,7 +132,7 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			type: 'POST',
 			success: function(response){
                 progress(0);
-				view.show_preview($.parseJSON(response).path);
+				view.show_preview(response.path);
 			}
 		});
 	}
