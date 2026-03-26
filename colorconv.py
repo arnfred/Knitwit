@@ -56,7 +56,14 @@ References
 
 
 import numpy as np
-import dtype
+
+
+def _img_as_float(image, force_copy=False) :
+    """Convert an image to float64 in [0, 1]."""
+    image = np.asarray(image)
+    if image.dtype.kind == 'f' :
+        return image.copy().astype(np.float64) if force_copy else image.astype(np.float64)
+    return image.astype(np.float64) / np.iinfo(image.dtype).max
 
 
 def guess_spatial_dimensions(image):
@@ -149,7 +156,7 @@ def _prepare_colorarray(arr):
                "got (" + (", ".join(map(str, arr.shape))) + ")")
         raise ValueError(msg)
 
-    return dtype.img_as_float(arr)
+    return _img_as_float(arr)
 
 
 def rgb2hsv(rgb):
@@ -1153,7 +1160,7 @@ def separate_stains(rgb, conv_matrix):
     >>> ihc = data.immunohistochemistry()
     >>> ihc_hdx = separate_stains(ihc, hdx_from_rgb)
     """
-    rgb = dtype.img_as_float(rgb) + 2
+    rgb = _img_as_float(rgb) + 2
     stains = np.dot(np.reshape(-np.log(rgb), (-1, 3)), conv_matrix)
     return np.reshape(stains, rgb.shape)
 
@@ -1212,7 +1219,7 @@ def combine_stains(stains, conv_matrix):
     """
     from ..exposure import rescale_intensity
 
-    stains = dtype.img_as_float(stains)
+    stains = _img_as_float(stains)
     logrgb2 = np.dot(-np.reshape(stains, (-1, 3)), conv_matrix)
     rgb2 = np.exp(logrgb2)
     return rescale_intensity(np.reshape(rgb2 - 2, stains.shape), in_range=(-1, 1))
@@ -1317,4 +1324,4 @@ def _prepare_lab_array(arr):
     shape = arr.shape
     if shape[-1] < 3:
         raise ValueError('Input array has less than 3 color channels')
-    return dtype.img_as_float(arr, force_copy=True)
+    return _img_as_float(arr, force_copy=True)

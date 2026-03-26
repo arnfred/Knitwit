@@ -12,11 +12,11 @@ Knitwit is an open-source knitting pattern generator web app. Users upload an im
 mise run dev
 ```
 
-Uses mise for tooling (Python, uv) and uv for dependency management. Dependencies are defined in `pyproject.toml` with a lockfile in `uv.lock`. The app uses Python 3 with web.py as the web framework.
+Uses mise for tooling (Python, uv) and uv for dependency management. Dependencies are defined in `pyproject.toml` with a lockfile in `uv.lock`. The app uses Python 3 with Flask as the web framework.
 
 ## Dependencies
 
-- **web.py** - web framework (routes, templates, form handling)
+- **Flask** - web framework (routes, Jinja2 templates)
 - **Wand** (ImageMagick bindings) - image loading, cropping, resizing, format conversion
 - **Pillow** - pixel data extraction from images
 - **NumPy** - array operations for color distance calculations and posterization
@@ -26,10 +26,9 @@ Wand requires ImageMagick to be installed on the system (`brew install imagemagi
 ## Architecture
 
 **Backend (Python):**
-- `server.py` — web.py application with all HTTP routes. Handles image upload (file, URL, base64 photo), pattern generation, save/load of patterns, and file cleanup. Uploaded images go to `static/data/uploads/`, saved patterns to `static/data/pages/` as JSON.
+- `server.py` — Flask application with all HTTP routes. Handles image upload (file, URL, base64 photo), pattern generation, save/load of patterns, and file cleanup. Uploaded images go to `static/data/uploads/`, saved patterns to `static/data/pages/` as JSON.
 - `pattern.py` — Core pattern generation logic. Opens an image via Wand, crops/resizes based on gauge, converts pixel data to NumPy arrays via Pillow, then posterizes to the user's chosen colors using CIE76 color distance in CIELAB space.
 - `colorconv.py` — Color space conversion functions (RGB↔LAB, RGB↔XYZ, etc.), extracted from scikit-image with scipy dependency removed.
-- `dtype.py` — NumPy dtype conversion utilities (from scikit-image).
 
 **Frontend (JavaScript, AMD via curl.js):**
 - `static/js/controller.js` — Main entry point, initializes the app
@@ -39,7 +38,7 @@ Wand requires ImageMagick to be installed on the system (`brew install imagemagi
 - `static/js/capture.js` — Camera/webcam capture
 - `static/js/page.js` — Saved pattern page display
 - Uses Ractive.js for templating (templates in `static/templates/`)
-- Server-side templates (web.py) in `templates/`
+- Server-side templates (Jinja2) in `templates/`
 
 ## Deployment
 
