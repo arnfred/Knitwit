@@ -17,11 +17,8 @@ Uses mise for tooling (Python, uv) and uv for dependency management. Dependencie
 ## Dependencies
 
 - **Flask** - web framework (routes, Jinja2 templates)
-- **Wand** (ImageMagick bindings) - image loading, cropping, resizing, format conversion
-- **Pillow** - pixel data extraction from images
+- **Pillow** - image loading, cropping, resizing, format conversion, pixel data extraction
 - **NumPy** - array operations for color distance calculations and posterization
-
-Wand requires ImageMagick to be installed on the system (`brew install imagemagick` on macOS).
 
 ## Architecture
 

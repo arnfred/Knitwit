@@ -1,8 +1,6 @@
 import numpy
 import math
-from wand.image import Image
-from PIL import Image as PImage
-import io
+from PIL import Image
 import colorconv
 
 
@@ -10,33 +8,27 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
     # Find height ratio
     height_ratio = gauge[1] / float(gauge[0])
 
-    # Open image, resize and posterize
-    with Image(filename=path) as image:
-        # Crop
-        if crop != None :
-            image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
-        # Resize to width and height ratio
-        resize(image, width, height_ratio)
-        # Get data
-        data = get_data(image)
+    # Open image and convert to RGB
+    image = Image.open(path).convert('RGB')
+
+    # Crop
+    if crop != None :
+        image = image.crop((crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y']))
+
+    # Resize to width and height ratio
+    image = resize(image, width, height_ratio)
+
+    # Get pixel data as numpy array
+    data = numpy.array(image, dtype=numpy.uint8)
+
     # Posterize image to fewer colors
     return posterize(data, colors)
 
 
 def resize(image, width, height_ratio) :
     img_width, img_height = image.size
-    height = math.floor((width / float(img_width)) * img_height / height_ratio)
-    image.transform(resize="%ix%i!" % (width, height))
-    return image
-
-
-
-def get_data(im) :
-    image = PImage.open(io.BytesIO(im.make_blob('ppm')))
-    width, height = image.size
-    data_array = numpy.array(image.getdata(), dtype=numpy.uint8)
-    depth = len(data_array[0])
-    return numpy.reshape(data_array, [height, width, depth])
+    height = int(math.floor((width / float(img_width)) * img_height / height_ratio))
+    return image.resize((width, height), Image.LANCZOS)
 
 
 def posterize(data, colors) :
@@ -72,4 +64,3 @@ def tolist(data) :
     def make_row(row) :
         return { 'row' : row.tolist() }
     return list(map(make_row, data))
-

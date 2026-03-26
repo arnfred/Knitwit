@@ -9,11 +9,12 @@ import sys
 import time
 import urllib.request
 from binascii import a2b_base64
+from io import BytesIO
 from ipaddress import ip_address
 from urllib.parse import urlparse
 
 from flask import Flask, jsonify, render_template, request
-from wand.image import Image
+from PIL import Image
 
 import pattern
 
@@ -54,16 +55,19 @@ def is_safe_url(url) :
         return False
 
 
-def prepare_image(img) :
-    """Flatten alpha onto white background and cap dimensions."""
-    if img.alpha_channel :
-        from wand.color import Color
-        img.background_color = Color('white')
-        img.alpha_channel = 'remove'
+def prepare_and_save(img, path) :
+    """Flatten alpha onto white, cap dimensions, save as JPEG."""
+    if img.mode in ('RGBA', 'LA', 'PA') :
+        background = Image.new('RGB', img.size, (255, 255, 255))
+        background.paste(img, mask=img.split()[-1])
+        img = background
+    elif img.mode != 'RGB' :
+        img = img.convert('RGB')
     w, h = img.size
     if w > MAX_IMAGE_DIMENSION or h > MAX_IMAGE_DIMENSION :
         ratio = min(MAX_IMAGE_DIMENSION / float(w), MAX_IMAGE_DIMENSION / float(h))
-        img.resize(int(w * ratio), int(h * ratio))
+        img = img.resize((int(w * ratio), int(h * ratio)), Image.LANCZOS)
+    img.save(path, 'JPEG')
 
 
 def cleanup_old_uploads(upload_dir="static/data/uploads/") :
@@ -126,14 +130,12 @@ def from_web() :
         log.warning("Error checking image type: %s", e)
         return json_error('Error while checking image type')
 
-    path = random_file_name("static/data/uploads/", "." + img_type)
+    path = random_file_name("static/data/uploads/", ".jpg")
 
     try:
-        with Image(file=url_obj) as img :
-            prepare_image(img)
-            img.format = 'jpeg'
-            img.save(filename=path)
-            return jsonify({ 'status': 'ok', 'path': path })
+        img = Image.open(url_obj)
+        prepare_and_save(img, path)
+        return jsonify({ 'status': 'ok', 'path': path })
     except Exception as e :
         log.warning("Error saving image from URL: %s", e)
         return json_error('Error while saving image')
@@ -148,11 +150,9 @@ def upload() :
     path = random_file_name("static/data/uploads/", ".jpg")
 
     try:
-        with Image(file=im_file) as img :
-            prepare_image(img)
-            img.format = 'jpeg'
-            img.save(filename=path)
-            return jsonify({ 'path': path })
+        img = Image.open(im_file)
+        prepare_and_save(img, path)
+        return jsonify({ 'path': path })
     except Exception as e :
         log.warning("Error saving uploaded image: %s", e)
         return json_error(str(e))
@@ -169,10 +169,8 @@ def photo() :
         path_jpg = random_file_name("static/data/uploads/", ".jpg")
         binary_data = a2b_base64(im_file)
 
-        with Image(blob=binary_data) as img :
-            prepare_image(img)
-            img.format = 'jpeg'
-            img.save(filename=path_jpg)
+        img = Image.open(BytesIO(binary_data))
+        prepare_and_save(img, path_jpg)
 
         return jsonify({ 'path': path_jpg })
     except Exception as e :

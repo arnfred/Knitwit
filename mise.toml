@@ -2,9 +2,6 @@
 python = "3.12"
 uv = "latest"
 
-[env]
-MAGICK_HOME = "{{exec(command='brew --prefix imagemagick')}}"
-
 [tasks.dev]
 description = "Run the knitwit server locally"
 run = "uv run python server.py"
