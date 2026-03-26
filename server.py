@@ -54,8 +54,12 @@ def is_safe_url(url) :
         return False
 
 
-def cap_image_size(img) :
-    """Resize image so neither dimension exceeds MAX_IMAGE_DIMENSION."""
+def prepare_image(img) :
+    """Flatten alpha onto white background and cap dimensions."""
+    if img.alpha_channel :
+        from wand.color import Color
+        img.background_color = Color('white')
+        img.alpha_channel = 'remove'
     w, h = img.size
     if w > MAX_IMAGE_DIMENSION or h > MAX_IMAGE_DIMENSION :
         ratio = min(MAX_IMAGE_DIMENSION / float(w), MAX_IMAGE_DIMENSION / float(h))
@@ -126,7 +130,7 @@ def from_web() :
 
     try:
         with Image(file=url_obj) as img :
-            cap_image_size(img)
+            prepare_image(img)
             img.format = 'jpeg'
             img.save(filename=path)
             return jsonify({ 'status': 'ok', 'path': path })
@@ -145,7 +149,7 @@ def upload() :
 
     try:
         with Image(file=im_file) as img :
-            cap_image_size(img)
+            prepare_image(img)
             img.format = 'jpeg'
             img.save(filename=path)
             return jsonify({ 'path': path })
@@ -166,7 +170,7 @@ def photo() :
         binary_data = a2b_base64(im_file)
 
         with Image(blob=binary_data) as img :
-            cap_image_size(img)
+            prepare_image(img)
             img.format = 'jpeg'
             img.save(filename=path_jpg)
 
