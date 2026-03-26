@@ -129,11 +129,14 @@ p#upload-msg {
 #upload-image {
     cursor: pointer;
     display: inline-block;
-    background-color: #e0e0e0;
-    border: 1px solid #333;
-    border-radius: 4px;
     text-align: center;
     font-weight: normal;
+    appearance: none;
+    background-color: buttonface;
+    border: 2px outset buttonborder;
+    border-radius: 0;
+    padding: 1px 6px;
+    box-sizing: border-box;
 }
 
 #upload-image img {
