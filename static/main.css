@@ -128,6 +128,12 @@ p#upload-msg {
 
 #upload-image {
     cursor: pointer;
+    display: inline-block;
+    background-color: #e0e0e0;
+    border: 1px solid #333;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: normal;
 }
 
 #upload-image img {
