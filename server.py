@@ -2,12 +2,16 @@ import web
 import json
 import random, string
 import os
+import time
 import numpy
 import re
 import pattern
 import urllib.request, urllib.parse, urllib.error
 from binascii import a2b_base64
 from wand.image import Image
+
+MAX_IMAGE_DIMENSION = 2000
+UPLOAD_MAX_AGE_SECONDS = 24 * 60 * 60  # 24 hours
 
 
 # Define pages
@@ -93,7 +97,7 @@ class from_web:
 
         try:
             with Image(file=url_obj) as img :
-                #im_norm = normalize_image(im);
+                cap_image_size(img)
                 img.format = 'jpeg'
                 img.save(filename=path)
                 return json.dumps({
@@ -111,6 +115,8 @@ class from_web:
 # A regular image is uploaded
 class upload :
     def POST(self):
+        cleanup_old_uploads()
+
         # Get the post data
         form = web.input(image={})
 
@@ -123,7 +129,7 @@ class upload :
         # We open file with PIL to save as jpg
         try:
             with Image(file=im_file) as img :
-                #im_norm = normalize_image(im);
+                cap_image_size(img)
                 img.format = 'jpeg'
                 img.save(filename=path)
                 return json.dumps({ 'path' : path })
@@ -157,6 +163,7 @@ class photo :
 
             # Write binary data
             with Image(blob=binary_data) as img :
+                cap_image_size(img)
                 img.format = 'jpeg'
                 img.save(filename=path_jpg)
 
@@ -293,6 +300,28 @@ def normalize_image(img):
     img_rgba = img.convert('RGBA')
     arr = numpy.array(numpy.asarray(img_rgba).astype('float'))
     return Image.fromarray(normalize(arr).astype('uint8'),'RGBA')
+
+
+def cap_image_size(img) :
+    """Resize image so neither dimension exceeds MAX_IMAGE_DIMENSION."""
+    w, h = img.size
+    if w > MAX_IMAGE_DIMENSION or h > MAX_IMAGE_DIMENSION :
+        ratio = min(MAX_IMAGE_DIMENSION / float(w), MAX_IMAGE_DIMENSION / float(h))
+        new_w = int(w * ratio)
+        new_h = int(h * ratio)
+        img.resize(new_w, new_h)
+
+
+def cleanup_old_uploads(upload_dir = "static/data/uploads/") :
+    """Delete uploaded images older than UPLOAD_MAX_AGE_SECONDS."""
+    try:
+        now = time.time()
+        for filename in os.listdir(upload_dir) :
+            filepath = os.path.join(upload_dir, filename)
+            if os.path.isfile(filepath) and now - os.path.getmtime(filepath) > UPLOAD_MAX_AGE_SECONDS :
+                os.remove(filepath)
+    except Exception:
+        pass
 
 
 def random_file_name(dir_path, ending = "", length = 10) :
