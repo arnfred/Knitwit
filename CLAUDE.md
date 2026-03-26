@@ -9,10 +9,10 @@ Knitwit is an open-source knitting pattern generator web app. Users upload an im
 ## Running Locally
 
 ```bash
-make run
+mise run dev
 ```
 
-This creates a Python venv, installs dependencies from `requirements.txt`, and runs the server via `python server.py`. The app uses Python 3 with web.py as the web framework.
+Uses mise for tooling (Python, uv) and uv for dependency management. Dependencies are defined in `pyproject.toml` with a lockfile in `uv.lock`. The app uses Python 3 with web.py as the web framework.
 
 ## Dependencies
 

@@ -1,6 +1,5 @@
 import numpy
 import math
-from itertools import groupby
 from wand.image import Image
 from PIL import Image as PImage
 import io
@@ -16,11 +15,11 @@ def open_image(path, colors, width = 60, crop = None, gauge = [40,40]) :
         # Crop
         if crop != None :
             image.crop(crop['x'], crop['y'], crop['w'] + crop['x'], crop['h'] + crop['y'])
-            # Resize to width and height ratio
-            resize(image, width, height_ratio)
-            # Get data
-            data = get_data(image)
-            # Posterize image to fewer colors
+        # Resize to width and height ratio
+        resize(image, width, height_ratio)
+        # Get data
+        data = get_data(image)
+    # Posterize image to fewer colors
     return posterize(data, colors)
 
 
@@ -58,11 +57,9 @@ def color_to_lab(c) :
 def color_distance(data_lab, color, luminance_factor = 0.8) :
     # Produce image uniformly colored with color converted to Lab color space
     color_lab = color_to_lab(color)
-    color_lab_canvas = numpy.zeros(data_lab.shape)
-    color_lab_canvas[:] = color_lab
 
     # Subtract the two images
-    data_diff = data_lab - color_lab_canvas
+    data_diff = data_lab - color_lab
 
     # Add luminance scale
     data_diff[:,:,0] = data_diff[:,:,0] * luminance_factor
@@ -76,7 +73,3 @@ def tolist(data) :
         return { 'row' : row.tolist() }
     return list(map(make_row, data))
 
-def run_length_encode(data) :
-    def encode_row(row) :
-        return [(len(list(g)), int(k)) for k,g in groupby(row)]
-    return list(map(encode_row, data))

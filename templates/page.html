@@ -1,11 +1,10 @@
-$def with(name, page_id)
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Knitwit: $name</title>
+    <title>Knitwit: {{ name }}</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png"/>
@@ -36,8 +35,8 @@ $def with(name, page_id)
 
       <script src="/static/lib/curl.js" type="text/javascript"></script>
       <script>
-	curl({ 
-	    paths: { 
+	curl({
+	    paths: {
 	      lib: '/static/lib/',
 	      js: '/static/js/',
 	      templates : '/static/templates/',
@@ -45,12 +44,12 @@ $def with(name, page_id)
           ractive : "/static/lib/ractive-legacy.min",
           ractive_tap : "/static/lib/ractive-events-tap.min",
           ractive_fade : "/static/lib/ractive-transitions-fade.min"
-	    } 
+	    }
 	  },
-	  ["js/page", "text!pages/$(page_id).json", "domReady!"],
+	  ["js/page", "text!pages/{{ page_id }}.json", "domReady!"],
 	  function(controller, page_data) {
 	    // Nothing here. Check controller for initialization
-	    page_json = \$.parseJSON(page_data);
+	    page_json = $.parseJSON(page_data);
 	    controller.init(page_json);
 	  });
       </script>
