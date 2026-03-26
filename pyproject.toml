@@ -3,8 +3,8 @@ name = "knitwit"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "numpy==1.26.4",
+    "numpy>=1.26,<2",
     "flask>=3.0,<4",
-    "wand==0.6.13",
-    "Pillow==10.2.0",
+    "wand>=0.6,<1",
+    "Pillow>=12,<13",
 ]
