@@ -57,6 +57,19 @@ def is_safe_url(url) :
 
 def prepare_and_save(img, path) :
     """Flatten alpha onto white, cap dimensions, save as JPEG."""
+    # For JPEG sources, decode at a reduced scale up front (libjpeg 1/2, 1/4, 1/8)
+    # so an oversized photo never fully materializes in RAM — this is what was
+    # OOM-killing the container on large uploads. No-op for non-JPEG formats.
+    img.draft('RGB', (MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION))
+    # PNG (and other non-JPEG formats) have no scaled decode, so draft is a no-op
+    # for them — a huge PNG would still decode its full raster and OOM the box.
+    # .size is known without decoding pixels, so reject anything still too large
+    # to decode safely. JPEGs have already been draft-reduced below this bound.
+    w, h = img.size
+    if w > 2 * MAX_IMAGE_DIMENSION or h > 2 * MAX_IMAGE_DIMENSION :
+        raise ValueError(
+            "Image too large to process (%dx%d); please resize it below %d pixels on its longest side and try again."
+            % (w, h, 2 * MAX_IMAGE_DIMENSION))
     if img.mode in ('RGBA', 'LA', 'PA') :
         background = Image.new('RGB', img.size, (255, 255, 255))
         background.paste(img, mask=img.split()[-1])
@@ -136,6 +149,8 @@ def from_web() :
         img = Image.open(url_obj)
         prepare_and_save(img, path)
         return jsonify({ 'status': 'ok', 'path': path })
+    except ValueError as e :
+        return json_error(str(e))
     except Exception as e :
         log.warning("Error saving image from URL: %s", e)
         return json_error('Error while saving image')
@@ -153,9 +168,11 @@ def upload() :
         img = Image.open(im_file)
         prepare_and_save(img, path)
         return jsonify({ 'path': path })
+    except ValueError as e :
+        return json_error(str(e))
     except Exception as e :
         log.warning("Error saving uploaded image: %s", e)
-        return json_error(str(e))
+        return json_error('Error while saving image')
 
 
 @app.route('/photo/', methods=['POST'])
@@ -173,6 +190,8 @@ def photo() :
         prepare_and_save(img, path_jpg)
 
         return jsonify({ 'path': path_jpg })
+    except ValueError as e :
+        return json_error(str(e))
     except Exception as e :
         log.warning("Error saving photo capture: %s", e)
         return json_error('Error while saving data url')

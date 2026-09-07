@@ -132,7 +132,17 @@ define(["lib/jquery", "js/capture", "text!templates/upload.html", "ractive", "ra
 			type: 'POST',
 			success: function(response){
                 progress(0);
+                if (response.status == "fail") {
+                    view.set("upload.upload_msg", response.error);
+                    view.set("upload.upload_msg_color", "#882222");
+                    return;
+                }
 				view.show_preview(response.path);
+			},
+			error: function(){
+                progress(0);
+                view.set("upload.upload_msg", "Error while uploading image");
+                view.set("upload.upload_msg_color", "#882222");
 			}
 		});
 	}
